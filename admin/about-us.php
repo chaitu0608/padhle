@@ -12,7 +12,7 @@ $pagedes=$_POST['pagedes'];
 $sql="update tblpage set PageTitle=:pagetitle,PageDescription=:pagedes where  PageType='aboutus'";
 $query=$dbh->prepare($sql);
 $query->bindParam(':pagetitle',$pagetitle,PDO::PARAM_STR);
-$query->bindParam(':pagedes',$pagedes,PDO::PARAM_STR);
+$query->bindParam(param: ':pagedes',$pagedes,PDO::PARAM_STR);
 
 $query->execute();
 echo '<script>alert("About us has been updated")</script>';
