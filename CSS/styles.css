@@ -12,7 +12,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 50px;
+    padding: 20px 50px;
     background-color: #1E1E1E;
 }
 .logo {
@@ -37,7 +37,10 @@ body {
 }
 .hero {
     text-align: center;
-    padding: 80px 20px;
+    padding-top: 130px !important;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 90px !important;
 }
 .hero h1 {
     font-size: 2.5rem;
@@ -63,3 +66,9 @@ body {
 .card h3 {
     margin-bottom: 10px;
 }
+
+/* .myFooter{ 
+    display:flex;
+    align-items: center;
+    justify-content: center; 
+} */
