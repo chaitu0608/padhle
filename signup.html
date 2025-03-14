@@ -3,29 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Signup - OAuth Authentication</title>
+    <title>Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./signupStyles.css" rel="stylesheet" />
   </head>
-  <body>
-    <div class="container">
-      <h2>Signup</h2>
-      <form id="signup-form">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required />
+  <body class="h-screen flex items-center justify-center gradient-background">
+    <div class="bg-[#000000] p-8 rounded-2xl shadow-xl w-full max-w-sm">
+      <h2 class="text-3xl font-bold text-center text-white mb-6">Sign Up</h2>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
-
-        <button type="submit">Signup</button>
-
-        <div class="oauth-buttons">
-          <button type="button" id="oauth-google">Signup with Google</button>
-          <button type="button" id="oauth-facebook">
-            Signup with Facebook
-          </button>
+      <form action="#" method="POST" class="space-y-4">
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-white"
+            >Email</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
         </div>
+
+        <!-- Password Field -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-white"
+            >Password</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300"
+        >
+          Sign Up
+        </button>
       </form>
+
+      <!-- Login Link -->
+      <p class="mt-4 text-center text-sm text-gray-600">
+        Already have an account?
+        <a href="#" class="text-blue-500 hover:underline">Login</a>
+      </p>
     </div>
-    <script src="script.js"></script>
   </body>
 </html>
