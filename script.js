@@ -14,7 +14,7 @@
   }
 }); */
 
-const dot = document.querySelector(".cursor-dot");
+/* const dot = document.querySelector(".cursor-dot");
 const outline = document.querySelector(".cursor-outline");
 
 let outlineX = 0,
@@ -42,8 +42,46 @@ function animateCursor() {
     outline.style.left = `${outlineX}px`;
     outline.style.top = `${outlineY}px`;
   }
-
+  document.querySelectorAll("button, a, img").forEach((element) => {
+    element.style.cursor = "none";
+  });
   requestAnimationFrame(animateCursor); // Continuously animate
 }
 
 animateCursor(); // Start animation loop
+
+ */
+
+const dot = document.querySelector(".cursor-dot");
+const outline = document.querySelector(".cursor-outline");
+
+let outlineX = 0,
+  outlineY = 0; // Position of the outer circle
+let targetX = 0,
+  targetY = 0; // Target position
+
+document.addEventListener("mousemove", (event) => {
+  targetX = event.clientX;
+  targetY = event.clientY;
+
+  // Instant movement for the dot (inner circle)
+  if (dot) {
+    dot.style.left = `${targetX}px`;
+    dot.style.top = `${targetY}px`;
+  }
+});
+
+// Smooth movement for the outline cursor
+function animateOutline() {
+  outlineX += (targetX - outlineX) * 0.1;
+  outlineY += (targetY - outlineY) * 0.1;
+
+  if (outline) {
+    outline.style.left = `${outlineX}px`;
+    outline.style.top = `${outlineY}px`;
+  }
+
+  requestAnimationFrame(animateOutline);
+}
+
+animateOutline(); // Start the animation loop
