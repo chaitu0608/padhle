@@ -1,147 +1,17 @@
-/* Global Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+.gradient-background {
+  background: linear-gradient(250deg, black, red);
+  background-size: 180% 180%;
+  animation: gradient-animation 5s ease infinite;
 }
 
-body {
-  background-color: #121212;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-/* Signup Container */
-.signup-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  max-width: 900px;
-  background: #1e1e1e;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Left Side - Image */
-.signup-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Right Side - Form */
-.signup-form {
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.signup-form h2 {
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.signup-form p {
-  font-size: 0.9rem;
-  color: #b3b3b3;
-  margin-top: 5px;
-}
-
-/* Input Fields */
-.input-group {
-  width: 100%;
-  margin-top: 15px;
-  text-align: left;
-}
-
-.input-group label {
-  font-size: 0.9rem;
-  color: #b3b3b3;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  background: #292929;
-  border: none;
-  color: white;
-  border-radius: 6px;
-  outline: none;
-  transition: 0.3s;
-}
-
-.input-group input:focus {
-  background: #333;
-  box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.2);
-}
-
-/* Checkbox */
-.checkbox-group {
-  display: flex;
-  align-items: center;
-  font-size: 0.8rem;
-  margin-top: 10px;
-}
-
-.checkbox-group input {
-  margin-right: 8px;
-}
-
-/* Button */
-.signup-button {
-  width: 100%;
-  background: linear-gradient(135deg, #4a4ab8, #2bb2df);
-  color: white;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  margin-top: 20px;
-  transition: all 0.3s;
-}
-
-.signup-button:hover {
-  background: linear-gradient(135deg, #2bb2df, #4a4ab8);
-  transform: scale(1.05);
-}
-
-/* Login Link */
-.login-link {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: #b3b3b3;
-}
-
-.login-link a {
-  color: #2bb2df;
-  text-decoration: none;
-}
-
-.login-link a:hover {
-  text-decoration: underline;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .signup-container {
-    grid-template-columns: 1fr;
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
   }
-
-  .signup-image {
-    display: none;
+  50% {
+    background-position: 100% 50%;
   }
-}
-/* Hide default cursor */
-body {
-  cursor: none;
+  100% {
+    background-position: 0% 50%;
+  }
 }
