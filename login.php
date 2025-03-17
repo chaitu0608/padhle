@@ -1,117 +1,109 @@
 <?php
-session_start();
-error_reporting(0);
-include('includes/dbconnection.php');
+// Database configuration
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "your_database";
 
-if(isset($_POST['login'])) 
-  {
-    $stuid=$_POST['stuid'];
-    $password=md5($_POST['password']);
-    $sql ="SELECT StuID,ID,StudentClass FROM tblstudent WHERE (UserName=:stuid || StuID=:stuid) and Password=:password";
-    $query=$dbh->prepare($sql);
-    $query-> bindParam(':stuid', $stuid, PDO::PARAM_STR);
-$query-> bindParam(':password', $password, PDO::PARAM_STR);
-    $query-> execute();
-    $results=$query->fetchAll(PDO::FETCH_OBJ);
-    if($query->rowCount() > 0)
-{
-foreach ($results as $result) {
-$_SESSION['sturecmsstuid']=$result->StuID;
-$_SESSION['sturecmsuid']=$result->ID;
-$_SESSION['stuclass']=$result->StudentClass;
-}
-
-  if(!empty($_POST["remember"])) {
-//COOKIES for username
-setcookie ("user_login",$_POST["stuid"],time()+ (10 * 365 * 24 * 60 * 60));
-//COOKIES for password
-setcookie ("userpassword",$_POST["password"],time()+ (10 * 365 * 24 * 60 * 60));
-} else {
-if(isset($_COOKIE["user_login"])) {
-setcookie ("user_login","");
-if(isset($_COOKIE["userpassword"])) {
-setcookie ("userpassword","");
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    
+    // Check if user exists
+    $check = $conn->prepare("SELECT id FROM users WHERE email = ?");
+    $check->bind_param("s", $email);
+    $check->execute();
+    $check->store_result();
+    
+    if ($check->num_rows > 0) {
+        $error = "User already exists!";
+    } else {
+        // Insert new user
+        $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
+        $stmt->bind_param("ss", $email, $password);
+        
+        if ($stmt->execute()) {
+            header("Location: login.php");
+            exit();
+        } else {
+            $error = "Registration failed!";
         }
-      }
+    }
+    $conn->close();
 }
-$_SESSION['login']=$_POST['stuid'];
-echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
-} else{
-echo "<script>alert('Invalid Details');</script>";
-}
-}
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-  
-    <title>Student  Management System|| Student Login Page</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="vendors/simple-line-icons/css/simple-line-icons.css">
-    <link rel="stylesheet" href="vendors/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="css/style.css">
-   
-  </head>
-  <body>
-    <div class="container-scroller">
-      <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="content-wrapper d-flex align-items-center auth">
-          <div class="row flex-grow">
-            <div class="col-lg-4 mx-auto">
-              <div class="auth-form-light text-left p-5">
-                <div class="brand-logo" align="center" style="font-weight:bold">
-     Student  Management System
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSign</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="signupStyles1.css" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    
+    <div class="cyber-container">
+        <div class="cyber-form">
+            <h2 class="cyber-title">SIGN UP</h2>
+            
+            <?php if(isset($error)): ?>
+                <div class="cyber-error"><?php echo $error; ?></div>
+            <?php endif; ?>
+
+            <form method="POST" class="space-y-6">
+                <div class="input-group">
+                    <input type="email" name="email" required>
+                    <label class="cyber-label">EMAIL</label>
+                    <div class="glow"></div>
                 </div>
-                <h6 class="font-weight-light">Sign in to continue.</h6>
-                <form class="pt-3" id="login" method="post" name="login">
-                  <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" placeholder="enter your student id or username" required="true" name="stuid" value="<?php if(isset($_COOKIE["user_login"])) { echo $_COOKIE["user_login"]; } ?>" >
-                  </div>
-                  <div class="form-group">
-                    
-                    <input type="password" class="form-control form-control-lg" placeholder="enter your password" name="password" required="true" value="<?php if(isset($_COOKIE["userpassword"])) { echo $_COOKIE["userpassword"]; } ?>">
-                  </div>
-                  <div class="mt-3">
-                    <button class="btn btn-success btn-block loginbtn" name="login" type="submit">Login</button>
-                  </div>
-                  <div class="my-2 d-flex justify-content-between align-items-center">
-                    <div class="form-check">
-                      <label class="form-check-label text-muted">
-                        <input type="checkbox" id="remember" class="form-check-input" name="remember" <?php if(isset($_COOKIE["user_login"])) { ?> checked <?php } ?> /> Keep me signed in </label>
-                    </div>
-                    <a href="forgot-password.php" class="auth-link text-black">Forgot password?</a>
-                  </div>
-                  <div class="mb-2">
-                    <a href="../index.php" class="btn btn-block btn-facebook auth-form-btn">
-                      <i class="icon-social-home mr-2"></i>Back Home </a>
-                  </div>
-                  
-                </form>
-              </div>
+
+                <div class="input-group">
+                    <input type="password" name="password" required>
+                    <label class="cyber-label">PASSWORD</label>
+                    <div class="glow"></div>
+                </div>
+
+                <button type="submit" class="cyber-button">
+                    <span class="cyber-text">CREATE ACCOUNT</span>
+                    <div class="cyber-glitch"></div>
+                </button>
+            </form>
+
+            <div class="social-auth">
+                <button class="google-btn cyber-button">
+                    <i class="fab fa-google"></i>
+                    <span>Sign Up with Google</span>
+                </button>
+                <button class="github-btn cyber-button">
+                    <i class="fab fa-github"></i>
+                    <span>Sign Up with GitHub</span>
+                </button>
             </div>
-          </div>
+
+            <p class="cyber-link">
+                Already have an account? <a href="login.php">LOGIN HERE</a>
+            </p>
         </div>
-        <!-- content-wrapper ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="js/off-canvas.js"></script>
-    <script src="js/misc.js"></script>
-    <!-- endinject -->
-  </body>
+
+    <script>
+        // Generate stars
+        for(let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            document.querySelector('.stars').appendChild(star);
+        }
+    </script>
+</body>
 </html>
