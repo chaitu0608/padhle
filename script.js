@@ -73,8 +73,8 @@ document.addEventListener("mousemove", (event) => {
 
 // Smooth movement for the outline cursor
 function animateOutline() {
-  outlineX += (targetX - outlineX) * 0.1;
-  outlineY += (targetY - outlineY) * 0.1;
+  outlineX += (targetX - outlineX) * 0.4;
+  outlineY += (targetY - outlineY) * 0.4;
 
   if (outline) {
     outline.style.left = `${outlineX}px`;
