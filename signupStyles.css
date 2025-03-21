@@ -1,17 +1,13 @@
 .gradient-background {
-<<<<<<< HEAD
-    background: linear-gradient(250deg,black,red);
-    background-size: 180% 180%;
-    animation: gradient-animation 5s ease infinite;
-}
+  background: linear-gradient(
+    250deg,
+    #0d0d0d,
+    #3b1e17,
+    #5e0e0e,
+    #8a2c0f,
+    #b8860b
+  );
 
-@keyframes gradient-animation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-=======
-  background: linear-gradient(250deg, black, red);
   background-size: 180% 180%;
   animation: gradient-animation 5s ease infinite;
 }
@@ -27,4 +23,3 @@
     background-position: 0% 50%;
   }
 }
->>>>>>> chaitanya-feature
