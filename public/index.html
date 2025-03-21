@@ -13,8 +13,8 @@
   />
 
   <!-- Custom Stylesheet -->
-  <link href="styles.css" rel="stylesheet" />
-  <script src="script.js" defer></script>
+  <link href="/src/assets/styles.css" rel="stylesheet" />
+  <script src="/src/assets/script.js" defer></script>
 </head>
 <body class="bg-black text-white">
   <div class="cursor-dot" data-cursor-dot="true"></div>
@@ -22,11 +22,15 @@
 
   <!-- Navbar -->
   <nav
-    class="flex justify-between items-center px-10 py-5 bg-[#1E1E1E] w-full shadow-lg"
+    class="flex w-full items-center justify-between bg-[#1E1E1E] px-10 py-5 shadow-lg"
   >
     <div class="flex items-center space-x-4">
       <a href="https://www.somaiya.edu/en/">
-        <img src="./university-logo.svg" alt="College Logo" class="h-12" />
+        <img
+          src="/public/images/university-logo.svg"
+          alt="College Logo"
+          class="h-12"
+        />
       </a>
       <h2 class="text-xl font-semibold">K.J. Somaiya College of Engineering</h2>
     </div>
@@ -40,39 +44,35 @@
   </nav>
   <h1></h1>
 
-  <div class="hero text-center py-20">
+  <div class="hero py-20 text-center">
     <h1 class="text-4xl font-bold">Welcome to Your Student Portal</h1>
-    <p class="text-lg text-gray-400 mt-3">
+    <p class="mt-3 text-lg text-gray-400">
       Access your courses, assignments, and campus updates in one place!
     </p>
   </div>
-
-  <!-- Cards Section -->
-  <div class="flex justify-center space-x-6 mt-10">
-    <div class="bg-[#1E1E1E] p-6 rounded-lg w-64 text-center shadow-lg">
-      <h3 class="text-xl font-semibold">📚 Courses</h3>
-      <p class="text-gray-400 mt-2">View your enrolled courses and progress.</p>
+  <!-- Magic UI Themed Login Section -->
+  <div class="relative mt-20 flex justify-center space-x-10">
+    <!-- Student Login -->
+    <div class="magic-card">
+      <h3 class="text-2xl font-semibold text-white">📚 Student Login</h3>
+      <p class="mt-2 text-gray-300">Access your courses and track progress.</p>
+      <button class="magic-btn">Login</button>
     </div>
 
-    <div class="bg-[#1E1E1E] p-6 rounded-lg w-64 text-center shadow-lg">
-      <h3 class="text-xl font-semibold">🗓️ Timetable</h3>
-      <p class="text-gray-400 mt-2">Check your daily class schedule.</p>
-    </div>
-
-    <div class="bg-[#1E1E1E] p-6 rounded-lg w-64 text-center shadow-lg">
-      <h3 class="text-xl font-semibold">📢 Announcements</h3>
-      <p class="text-gray-400 mt-2">
-        Stay updated with the latest campus news.
-      </p>
+    <!-- Admin Login -->
+    <div class="magic-card">
+      <h3 class="text-2xl font-semibold text-white">🗓️ Admin Login</h3>
+      <p class="mt-2 text-gray-300">Manage students, schedules, and more.</p>
+      <button class="magic-btn">Login</button>
     </div>
   </div>
 
   <!--Footer-->
-  <div class="myFooter pt-32 px-80">
-    <footer class="bg-[#1E1E1E] text-white py-6 rounded-t-lg">
-      <div class="flex justify-center space-x-6 mb-4">
+  <div class="myFooter px-80 pt-32">
+    <footer class="rounded-t-lg bg-[#1E1E1E] py-6 text-white">
+      <div class="mb-4 flex justify-center space-x-6">
         <!-- Social Media Icons -->
-        <a href="#" class="text-gray-400 hover:text-white text-2xl">
+        <a href="#" class="text-2xl text-gray-400 hover:text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6"
@@ -85,22 +85,22 @@
           </svg>
           <i class="fab fa-facebook"></i>
         </a>
-        <a href="#" class="text-gray-400 hover:text-white text-2xl">
+        <a href="#" class="text-2xl text-gray-400 hover:text-white">
           <i class="fab fa-instagram"></i>
         </a>
-        <a href="#" class="text-gray-400 hover:text-white text-2xl">
+        <a href="#" class="text-2xl text-gray-400 hover:text-white">
           <i class="fab fa-x-twitter"></i>
         </a>
-        <a href="#" class="text-gray-400 hover:text-white text-2xl">
+        <a href="#" class="text-2xl text-gray-400 hover:text-white">
           <i class="fab fa-github"></i>
         </a>
-        <a href="#" class="text-gray-400 hover:text-white text-2xl">
+        <a href="#" class="text-2xl text-gray-400 hover:text-white">
           <i class="fab fa-youtube"></i>
         </a>
       </div>
 
       <!-- Copyright Text -->
-      <p class="text-center text-gray-400 text-sm">
+      <p class="text-center text-sm text-gray-400">
         © SOMAIYA Vidyavihar University, Inc. All rights reserved.
       </p>
     </footer>
