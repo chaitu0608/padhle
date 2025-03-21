@@ -118,3 +118,118 @@ body {
   transform: translate(-50%, -50%) scale(1.2);
   background-color: lightpink;
 }
+/* Magic Cards */
+/* Bigger Magic Cards */
+.magic-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 45px; /* Increased padding */
+  width: 350px; /* Increased width */
+  height: 250px; /* Added height */
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.3);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.magic-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(255, 255, 255, 0.3);
+}
+
+/* Bigger Magic Button */
+.magic-btn {
+  margin-top: 20px;
+  padding: 12px 30px; /* Increased padding */
+  font-size: 1.2rem; /* Increased font size */
+  border-radius: 10px;
+  background: linear-gradient(45deg, #ff8c00, #ff0080);
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.magic-btn:hover {
+  background: linear-gradient(45deg, #ff5722, #ff3d00);
+  transform: scale(1.08);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Track background */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: white; /* Scrollbar color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: grey; /* Darker color on hover */
+}
+
+/* Ensure custom cursor on scrollbar */
+::-webkit-scrollbar {
+  cursor: none;
+}
+
+::-webkit-scrollbar-thumb {
+  cursor: none;
+}
+
+::-webkit-scrollbar-track {
+  cursor: none;
+}
+
+/* Hide cursor globally */
+* {
+  cursor: none !important;
+}
+/* 
+
+::-webkit-scrollbar,
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track {
+  cursor: none !important;
+}
+
+
+input,
+textarea,
+button,
+a {
+  cursor: none !important;
+}
+
+* {
+  cursor: none !important;
+}
+
+
+::-webkit-scrollbar,
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track {
+  cursor: none !important;
+}
+
+
+input,
+textarea,
+button,
+a,
+select {
+  cursor: none !important;
+}
+
+
+html {
+  cursor: none !important;
+} */
