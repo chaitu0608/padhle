@@ -1,0 +1,237 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  background-color: #121212;
+  color: white;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: #1e1e1e;
+}
+.logo {
+  display: flex;
+  align-items: center;
+}
+.logo img {
+  height: 40px;
+  margin-right: 10px;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+.nav-links li {
+  margin: 0 15px;
+}
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+}
+.hero {
+  text-align: center;
+  padding-top: 130px !important;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 90px !important;
+}
+.hero h1 {
+  font-size: 2.5rem;
+}
+.hero p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  opacity: 0.8;
+}
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 40px;
+}
+.card {
+  background: #1e1e1e;
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+  border-radius: 10px;
+}
+.card h3 {
+  margin-bottom: 10px;
+}
+
+/* Hide default cursor */
+body {
+  cursor: none;
+}
+
+/* Small dot cursor */
+.cursor-dot {
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(
+    circle,
+    rgb(74, 74, 184) 0%,
+    rgb(43, 178, 223) 80%
+  );
+  position: fixed;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none;
+  transition: transform 0.1s ease;
+}
+
+/* Outline cursor */
+.cursor-outline {
+  width: 30px;
+  height: 30px;
+  border: 2px dashed powderblue;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none;
+  animation: outline-pulse 1.5s infinite alternate;
+  transition: transform 0.1s ease;
+}
+
+@keyframes outline-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Hover effect */
+.cursor-dot:hover,
+.cursor-outline:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+  background-color: lightpink;
+}
+/* Magic Cards */
+/* Bigger Magic Cards */
+.magic-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 45px; /* Increased padding */
+  width: 350px; /* Increased width */
+  height: 250px; /* Added height */
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.3);
+  position: relative;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.magic-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(255, 255, 255, 0.3);
+}
+
+/* Bigger Magic Button */
+.magic-btn {
+  margin-top: 20px;
+  padding: 12px 30px; /* Increased padding */
+  font-size: 1.2rem; /* Increased font size */
+  border-radius: 10px;
+  background: linear-gradient(45deg, #ff8c00, #ff0080);
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.magic-btn:hover {
+  background: linear-gradient(45deg, #ff5722, #ff3d00);
+  transform: scale(1.08);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Track background */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: white; /* Scrollbar color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: grey; /* Darker color on hover */
+}
+
+/* Ensure custom cursor on scrollbar */
+::-webkit-scrollbar {
+  cursor: none;
+}
+
+::-webkit-scrollbar-thumb {
+  cursor: none;
+}
+
+::-webkit-scrollbar-track {
+  cursor: none;
+}
+
+/* Hide cursor globally */
+* {
+  cursor: none !important;
+}
+/* 
+
+::-webkit-scrollbar,
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track {
+  cursor: none !important;
+}
+
+
+input,
+textarea,
+button,
+a {
+  cursor: none !important;
+}
+
+* {
+  cursor: none !important;
+}
+
+
+::-webkit-scrollbar,
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track {
+  cursor: none !important;
+}
+
+
+input,
+textarea,
+button,
+a,
+select {
+  cursor: none !important;
+}
+
+
+html {
+  cursor: none !important;
+} */
