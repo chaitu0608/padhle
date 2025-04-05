@@ -52,6 +52,7 @@ animateCursor(); // Start animation loop
 
  */
 
+// Custom Cursor Logic
 const dot = document.querySelector(".cursor-dot");
 const outline = document.querySelector(".cursor-outline");
 
@@ -85,3 +86,15 @@ function animateOutline() {
 }
 
 animateOutline(); // Start the animation loop
+
+// Initialize the Acertinity UI Meteor Effect
+Meteor.init({
+  canvas: document.getElementById("meteor-canvas"), // Target the canvas element
+  meteorColor: "#ffffff", // Color of the meteors
+  backgroundColor: "#000000", // Background color of the canvas
+  speed: 2, // Speed of the meteors
+  density: 100, // Number of meteors on the screen
+  glow: true, // Enable glowing effect for meteors
+  trailLength: 0.8, // Length of the meteor trails (0 to 1)
+  direction: "diagonal", // Direction of meteors (e.g., "diagonal", "horizontal", "vertical")
+});
