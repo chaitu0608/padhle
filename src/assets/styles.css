@@ -103,80 +103,131 @@ body {
   transition: transform 0.1s ease;
 }
 
-@keyframes outline-pulse {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-}
-
-/* Hover effect */
-.cursor-dot:hover,
-.cursor-outline:hover {
-  transform: translate(-50%, -50%) scale(1.2);
-  background-color: lightpink;
-}
-/* Magic Cards */
+/* Magic Cards with improved sizing and effects */
 .magic-card {
-  background: rgba(255, 255, 255, 0.1); /* Transparent background */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
-  padding: 40px; /* Consistent padding */
-  width: 300px; /* Consistent width */
-  height: 250px; /* Consistent height */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1.5rem;
+  padding: 50px; /* Increased padding */
+  width: 400px; /* Increased width */
+  height: 350px; /* Increased height */
   text-align: center;
-  border-radius: 15px; /* Rounded corners */
-  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2); /* Subtle shadow */
+  border-radius: 20px; /* Slightly larger border radius */
+  box-shadow:
+    0 8px 32px rgba(87, 30, 30, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1); /* Added inner border glow */
   position: relative;
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease; /* Smooth hover effect */
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden; /* For the shine effect */
+}
+
+/* Added shine effect on hover */
+.magic-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: transform 0.6s;
+  pointer-events: none;
 }
 
 .magic-card:hover {
-  transform: translateY(-10px); /* Lift the card slightly on hover */
-  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3); /* Enhanced shadow on hover */
+  transform: translateY(-15px) scale(1.02); /* Enhanced lift effect */
+  box-shadow:
+    0 15px 40px rgba(255, 255, 255, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
-/* Magic Button */
+.magic-card:hover::before {
+  transform: translateX(100%) rotate(45deg);
+}
+
+/* Improved Magic Button */
 .magic-btn {
-  margin-top: 20px;
-  padding: 12px 30px; /* Consistent padding */
-  font-size: 1.2rem; /* Consistent font size */
-  border-radius: 10px; /* Rounded corners */
-  background: linear-gradient(
-    45deg,
-    #ff8c00,
-    #ff0080
-  ); /* Gradient background */
+  margin-top: 30px;
+  padding: 15px 35px;
+  font-size: 1.3rem;
+  border-radius: 12px;
+  background: linear-gradient(45deg, #ff8c00, #ff0080, #ff8c00);
+  background-size: 200% auto;
   border: none;
   color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease-in-out; /* Smooth hover effect */
+  transition:
+    all 0.3s ease-in-out,
+    background-position 0.5s ease-in-out;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
 }
 
 .magic-btn:hover {
-  background: linear-gradient(
-    45deg,
-    #ff5722,
-    #ff3d00
-  ); /* Change gradient on hover */
-  transform: scale(1.1); /* Slightly enlarge the button on hover */
+  background-position: right center;
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(255, 136, 0, 0.4);
 }
 
-/* Responsive Design for Magic Cards */
+/* Added button click effect */
+.magic-btn:active {
+  transform: scale(0.95);
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 1200px) {
+  .magic-card {
+    width: 350px;
+    height: 300px;
+    padding: 40px;
+  }
+}
+
 @media (max-width: 768px) {
   .magic-card {
-    width: 90%; /* Make cards responsive for smaller screens */
-    height: auto; /* Allow height to adjust dynamically */
-    padding: 30px; /* Adjust padding for smaller screens */
+    width: calc(100% - 40px); /* Account for margins */
+    max-width: 320px;
+    height: auto;
+    min-height: 250px;
+    padding: 30px;
+    margin: 20px auto;
   }
 
   .magic-btn {
-    font-size: 1rem; /* Adjust button font size for smaller screens */
-    padding: 10px 20px; /* Adjust button padding */
+    font-size: 1.1rem;
+    padding: 12px 25px;
+  }
+}
+
+/* Optional: Add card content animations */
+.magic-card h2,
+.magic-card p {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.magic-card p {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
