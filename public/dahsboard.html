@@ -4,200 +4,312 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Padhle - Student Dashboard</title>
-    <link rel="stylesheet" href="../src/assets/dashboardStyles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#121212',
+                        'dark-lighter': '#000000',   //'#1e1e1e'
+                        'dark-border': '#333333',    //'#333333'
+                        'somaiya-red': '#D90429',
+                        'highlight-yellow': '#FFD700',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Import Inter font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D90429;
+        }
+    </style>
+
+    <!-- GSAP Library -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script> -->
 </head>
-<body>
-    <div class="dashboard-container">
-        <!-- Navbar -->
-        <header class="navbar">
-            <div class="navbar-logo">
-                <img src="placeholder-logo.png" alt="Padhle Logo" class="logo">
-                <span class="logo-text">Padhle</span>
+<body class="bg-dark text-white font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="bg-dark-lighter w-64 border-r border-dark-border h-full flex-shrink-0 fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
+            <!-- Logo -->
+            <div class="p-4 border-b border-dark-border">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-somaiya-red rounded-md flex items-center justify-center text-white font-bold text-xl">P</div>
+                    <span class="ml-3 text-xl font-bold text-highlight-yellow">Padhle</span>
+                </div>
             </div>
-            <nav class="navbar-links">
-                <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
-                <a href="#"><i class="fas fa-book"></i> Homework</a>
-                <a href="#"><i class="fas fa-bell"></i> Notices</a>
+            
+            <!-- Navigation Links -->
+            <nav class="mt-6 px-4">
+                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white bg-somaiya-red bg-opacity-40 rounded-md transition-colors duration-200 hover:bg-somaiya-red hover:bg-opacity-20">
+                    <i class="fas fa-home w-5 h-5"></i>
+                    <span class="ml-3">Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
+                    <i class="fas fa-book w-5 h-5"></i>
+                    <span class="ml-3">Homework</span>
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-dark-border hover:text-white">
+                    <i class="fas fa-bell w-5 h-5"></i>
+                    <span class="ml-3">Notices</span>
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-dark-border hover:text-white">
+                    <i class="fas fa-user w-5 h-5"></i>
+                    <span class="ml-3">Profile</span>
+                </a>
             </nav>
-            <div class="navbar-actions">
-                <button id="profile-btn" class="icon-btn"><i class="fas fa-user"></i></button>
-                <button class="icon-btn"><i class="fas fa-sign-out-alt"></i></button>
+            
+            <!-- Logout at bottom -->
+            <div class="absolute bottom-0 w-full p-4 border-t border-dark-border">
+                <a href="#" class="flex items-center px-4 py-3 text-gray-400 rounded-md transition-colors duration-200 hover:bg-dark-border hover:text-white">
+                    <i class="fas fa-sign-out-alt w-5 h-5"></i>
+                    <span class="ml-3">Logout</span>
+                </a>
             </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Welcome Section -->
-            <section class="welcome-section">
-                <div class="welcome-card">
-                    <h1>Welcome back, Rahul Sharma!</h1>
-                    <p>You have 2 pending assignments and 3 new notices.</p>
-                </div>
-            </section>
-
-            <!-- Notices Section -->
-            <section class="notices-section">
-                <div class="section-header">
-                    <h2>Latest Notices</h2>
-                    <a href="#" class="view-all">View All</a>
-                </div>
-                <div class="notices-grid">
-                    <div class="notice-card">
-                        <div class="card-header">
-                            <h3>Semester Exam Schedule</h3>
-                            <span class="date">May 15, 2025</span>
-                        </div>
-                        <div class="card-content">
-                            <p>The final semester examination schedule has been released. Please check your email for details.</p>
-                        </div>
-                    </div>
-                    <div class="notice-card">
-                        <div class="card-header">
-                            <h3>Campus Maintenance</h3>
-                            <span class="date">May 10, 2025</span>
-                        </div>
-                        <div class="card-content">
-                            <p>The library will be closed for maintenance from May 10-12. Please plan accordingly.</p>
-                        </div>
-                    </div>
-                    <div class="notice-card">
-                        <div class="card-header">
-                            <h3>Scholarship Applications</h3>
-                            <span class="date">May 5, 2025</span>
-                        </div>
-                        <div class="card-content">
-                            <p>Scholarship applications for the next academic year are now open. Last date to apply is June 15.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Homework Section -->
-            <section class="homework-section">
-                <div class="section-header">
-                    <h2>Homework</h2>
-                    <a href="#" class="view-all">View All</a>
-                </div>
-                <div class="homework-grid">
-                    <div class="homework-card">
-                        <div class="card-header">
-                            <div>
-                                <h3>Calculus Assignment</h3>
-                                <span class="subject">Mathematics</span>
-                            </div>
-                            <span class="status pending">Pending</span>
-                        </div>
-                        <div class="card-content">
-                            <div class="due-date">
-                                <i class="fas fa-calendar"></i> Due: May 12, 2025
-                            </div>
-                            <button class="action-btn">Submit</button>
-                        </div>
-                    </div>
-                    <div class="homework-card">
-                        <div class="card-header">
-                            <div>
-                                <h3>Mechanics Lab Report</h3>
-                                <span class="subject">Physics</span>
-                            </div>
-                            <span class="status submitted">Submitted</span>
-                        </div>
-                        <div class="card-content">
-                            <div class="due-date">
-                                <i class="fas fa-calendar"></i> Due: May 10, 2025
-                            </div>
-                            <button class="action-btn">View</button>
-                        </div>
-                    </div>
-                    <div class="homework-card">
-                        <div class="card-header">
-                            <div>
-                                <h3>Algorithm Analysis</h3>
-                                <span class="subject">Computer Science</span>
-                            </div>
-                            <span class="status pending">Pending</span>
-                        </div>
-                        <div class="card-content">
-                            <div class="due-date">
-                                <i class="fas fa-calendar"></i> Due: May 15, 2025
-                            </div>
-                            <button class="action-btn">Submit</button>
-                        </div>
-                    </div>
-                    <div class="homework-card">
-                        <div class="card-header">
-                            <div>
-                                <h3>Essay on Modern Literature</h3>
-                                <span class="subject">English</span>
-                            </div>
-                            <span class="status submitted">Submitted</span>
-                        </div>
-                        <div class="card-content">
-                            <div class="due-date">
-                                <i class="fas fa-calendar"></i> Due: May 8, 2025
-                            </div>
-                            <button class="action-btn">View</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Made with ❤️ by Bhoumish and Chaitanya - © Somaiya University</p>
-        </footer>
-
-        <!-- Profile Sidebar -->
-        <div id="profile-sidebar" class="profile-sidebar">
-            <div class="sidebar-header">
-                <h2>Profile</h2>
-                <button id="close-sidebar" class="close-btn"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="sidebar-content">
-                <div class="profile-info">
-                    <div class="profile-avatar">RS</div>
-                    <h3>Rahul Sharma</h3>
-                    <p>Computer Science - Year 3</p>
-                </div>
-                <div class="profile-form">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" value="rahul.sharma@somaiya.edu" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" value="+91 98765 43210">
-                    </div>
-                    <div class="form-group">
-                        <label for="roll">Roll Number</label>
-                        <input type="text" id="roll" value="CS2023056" readonly>
-                    </div>
-                    <div class="separator"></div>
-                    <div class="form-group">
-                        <label for="current-password">Current Password</label>
-                        <input type="password" id="current-password" placeholder="Enter current password">
-                    </div>
-                    <div class="form-group">
-                        <label for="new-password">New Password</label>
-                        <input type="password" id="new-password" placeholder="Enter new password">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirm-password">Confirm New Password</label>
-                        <input type="password" id="confirm-password" placeholder="Confirm new password">
-                    </div>
-                    <div class="form-actions">
-                        <button class="save-btn">Save Changes</button>
-                        <button class="cancel-btn">Cancel</button>
-                    </div>
-                </div>
-            </div>
+        </aside>
+        
+        <!-- Mobile sidebar toggle -->
+        <div class="fixed bottom-4 right-4 md:hidden z-40">
+            <button id="sidebar-toggle" class="bg-somaiya-red text-white p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none">
+                <i id="sidebar-icon" class="fas fa-bars"></i>
+            </button>
         </div>
-        <div id="overlay" class="overlay"></div>
+        
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto md:ml-64 transition-all duration-300 ease-in-out">
+            <!-- Top bar with toggle button -->
+            <div class="bg-dark-lighter border-b border-dark-border p-4 flex justify-between items-center sticky top-0 z-20">
+                <h1 class="text-xl font-semibold text-highlight-yellow">Student Dashboard</h1>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-400">Rahul Sharma</span>
+                    <div class="w-8 h-8 bg-somaiya-red rounded-full flex items-center justify-center text-white font-medium">
+                        RS
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div class="p-6 animate-fade-in">
+                <!-- Welcome Section -->
+                <div class="bg-dark-lighter border border-dark-border rounded-lg p-6 mb-8 transform transition-all duration-300 hover:shadow-lg">
+                    <h2 class="text-2xl font-bold mb-2">Welcome back, Rahul Sharma!</h2>
+                    <p class="text-gray-400">You have 2 pending assignments and 3 new notices.</p>
+                </div>
+                
+                <!-- Notices Section -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-highlight-yellow">Latest Notices</h2>
+                        <a href="#" class="text-somaiya-red hover:underline text-sm transition-colors duration-200">View All</a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Notice Card 1 -->
+                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                            <div class="p-4 border-b border-dark-border">
+                                <h3 class="font-semibold mb-1">Semester Exam Schedule</h3>
+                                <span class="text-xs text-gray-400">May 15, 2025</span>
+                            </div>
+                            <div class="p-4">
+                                <p class="text-sm text-gray-300 mb-3">The final semester examination schedule has been released. Please check your email for details.</p>
+                                <a href="#" class="text-somaiya-red text-sm hover:underline transition-colors duration-200">View Details</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Notice Card 2 -->
+                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                            <div class="p-4 border-b border-dark-border">
+                                <h3 class="font-semibold mb-1">Campus Maintenance</h3>
+                                <span class="text-xs text-gray-400">May 10, 2025</span>
+                            </div>
+                            <div class="p-4">
+                                <p class="text-sm text-gray-300 mb-3">The library will be closed for maintenance from May 10-12. Please plan accordingly.</p>
+                                <a href="#" class="text-somaiya-red text-sm hover:underline transition-colors duration-200">View Details</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Notice Card 3 -->
+                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                            <div class="p-4 border-b border-dark-border">
+                                <h3 class="font-semibold mb-1">Scholarship Applications</h3>
+                                <span class="text-xs text-gray-400">May 5, 2025</span>
+                            </div>
+                            <div class="p-4">
+                                <p class="text-sm text-gray-300 mb-3">Scholarship applications for the next academic year are now open. Last date to apply is June 15.</p>
+                                <a href="#" class="text-somaiya-red text-sm hover:underline transition-colors duration-200">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Homework Section -->
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-highlight-yellow">Homework</h2>
+                        <a href="#" class="text-somaiya-red hover:underline text-sm transition-colors duration-200">View All</a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Homework Card 1 -->
+                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                            <div class="p-4 border-b border-dark-border flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-semibold mb-1">Calculus Assignment</h3>
+                                    <span class="text-xs text-gray-400">Mathematics</span>
+                                </div>
+                                <span class="px-2 py-1 bg-somaiya-red bg-opacity-20 text-somaiya-red text-xs rounded-md">Pending</span>
+                            </div>
+                            <div class="p-4 flex justify-between items-center">
+                                <div class="flex items-center text-sm text-gray-400">
+                                    <i class="fas fa-calendar-alt mr-2"></i>
+                                    Due: May 12, 2025
+                                </div>
+                                <button class="px-3 py-1 bg-somaiya-red text-white text-sm rounded transition-colors duration-200 hover:bg-opacity-90">Submit</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Homework Card 2 -->
+                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                            <div class="p-4 border-b border-dark-border flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-semibold mb-1">Mechanics Lab Report</h3>
+                                    <span class="text-xs text-gray-400">Physics</span>
+                                </div>
+                                <span class="px-2 py-1 bg-green-900 bg-opacity-20 text-green-400 text-xs rounded-md">Submitted</span>
+                            </div>
+                            <div class="p-4 flex justify-between items-center">
+                                <div class="flex items-center text-sm text-gray-400">
+                                    <i class="fas fa-calendar-alt mr-2"></i>
+                                    Due: May 10, 2025
+                                </div>
+                                <button class="px-3 py-1 border border-somaiya-red text-somaiya-red text-sm rounded transition-colors duration-200 hover:bg-somaiya-red hover:bg-opacity-10">View</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Homework Card 3 -->
+                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                            <div class="p-4 border-b border-dark-border flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-semibold mb-1">Algorithm Analysis</h3>
+                                    <span class="text-xs text-gray-400">Computer Science</span>
+                                </div>
+                                <span class="px-2 py-1 bg-somaiya-red bg-opacity-20 text-somaiya-red text-xs rounded-md">Pending</span>
+                            </div>
+                            <div class="p-4 flex justify-between items-center">
+                                <div class="flex items-center text-sm text-gray-400">
+                                    <i class="fas fa-calendar-alt mr-2"></i>
+                                    Due: May 15, 2025
+                                </div>
+                                <button class="px-3 py-1 bg-somaiya-red text-white text-sm rounded transition-colors duration-200 hover:bg-opacity-90">Submit</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Homework Card 4 -->
+                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                            <div class="p-4 border-b border-dark-border flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-semibold mb-1">Essay on Modern Literature</h3>
+                                    <span class="text-xs text-gray-400">English</span>
+                                </div>
+                                <span class="px-2 py-1 bg-green-900 bg-opacity-20 text-green-400 text-xs rounded-md">Submitted</span>
+                            </div>
+                            <div class="p-4 flex justify-between items-center">
+                                <div class="flex items-center text-sm text-gray-400">
+                                    <i class="fas fa-calendar-alt mr-2"></i>
+                                    Due: May 8, 2025
+                                </div>
+                                <button class="px-3 py-1 border border-somaiya-red text-somaiya-red text-sm rounded transition-colors duration-200 hover:bg-somaiya-red hover:bg-opacity-10">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <footer class="mt-12 pb-6 text-center text-gray-500 text-sm">
+                    Made with ❤️ by Bhoumish and Chaitanya - © Somaiya University
+                </footer>
+            </div>
+        </main>
     </div>
-
-    <script src="../src/assets/DashboardScript.js"></script>
+    
+    <script>
+        // Sidebar toggle functionality
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarIcon = document.getElementById('sidebar-icon');
+        
+        sidebarToggle.addEventListener('click', () => {
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebarIcon.classList.remove('fa-bars');
+                sidebarIcon.classList.add('fa-times');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                sidebarIcon.classList.remove('fa-times');
+                sidebarIcon.classList.add('fa-bars');
+            }
+        });
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const isMobile = window.innerWidth < 768;
+            const isOutsideSidebar = !sidebar.contains(e.target) && !sidebarToggle.contains(e.target);
+            
+            if (isMobile && isOutsideSidebar && !sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+                sidebarIcon.classList.remove('fa-times');
+                sidebarIcon.classList.add('fa-bars');
+            }
+        });
+    </script>
+    <!--GSAP Animations-->
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        gsap.utils.toArray(".card").forEach((card, i) => {
+            gsap.fromTo(card, {
+            opacity: 0,
+            y: 30
+            }, {
+            opacity: 1,
+            y: 0,
+            delay: i * 0.05,  // small delay instead of stagger
+            duration: 0.4,
+            ease: "power2.out"
+            });
+         });
+        });
+      </script> -->
 </body>
 </html>
