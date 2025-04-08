@@ -119,44 +119,65 @@ body {
   background-color: lightpink;
 }
 /* Magic Cards */
-/* Bigger Magic Cards */
 .magic-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 45px; /* Increased padding */
-  width: 350px; /* Increased width */
-  height: 250px; /* Added height */
+  background: rgba(255, 255, 255, 0.1); /* Transparent background */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  padding: 40px; /* Consistent padding */
+  width: 300px; /* Consistent width */
+  height: 250px; /* Consistent height */
   text-align: center;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.3);
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2); /* Subtle shadow */
   position: relative;
   transition:
     transform 0.3s ease,
-    box-shadow 0.3s ease;
+    box-shadow 0.3s ease; /* Smooth hover effect */
 }
 
 .magic-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 25px rgba(255, 255, 255, 0.3);
+  transform: translateY(-10px); /* Lift the card slightly on hover */
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3); /* Enhanced shadow on hover */
 }
 
-/* Bigger Magic Button */
+/* Magic Button */
 .magic-btn {
   margin-top: 20px;
-  padding: 12px 30px; /* Increased padding */
-  font-size: 1.2rem; /* Increased font size */
-  border-radius: 10px;
-  background: linear-gradient(45deg, #ff8c00, #ff0080);
+  padding: 12px 30px; /* Consistent padding */
+  font-size: 1.2rem; /* Consistent font size */
+  border-radius: 10px; /* Rounded corners */
+  background: linear-gradient(
+    45deg,
+    #ff8c00,
+    #ff0080
+  ); /* Gradient background */
   border: none;
   color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out; /* Smooth hover effect */
 }
 
 .magic-btn:hover {
-  background: linear-gradient(45deg, #ff5722, #ff3d00);
-  transform: scale(1.08);
+  background: linear-gradient(
+    45deg,
+    #ff5722,
+    #ff3d00
+  ); /* Change gradient on hover */
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
+
+/* Responsive Design for Magic Cards */
+@media (max-width: 768px) {
+  .magic-card {
+    width: 90%; /* Make cards responsive for smaller screens */
+    height: auto; /* Allow height to adjust dynamically */
+    padding: 30px; /* Adjust padding for smaller screens */
+  }
+
+  .magic-btn {
+    font-size: 1rem; /* Adjust button font size for smaller screens */
+    padding: 10px 20px; /* Adjust button padding */
+  }
 }
 
 /* Custom Scrollbar */
