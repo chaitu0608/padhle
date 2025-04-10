@@ -103,9 +103,14 @@ body {
   transition: transform 0.1s ease;
 }
 
-/* Magic Cards with improved sizing and effects */
+/* Magic Cards with consistent border radius and improved effects */
 .magic-card {
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Align items vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
   background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
@@ -114,7 +119,7 @@ body {
   width: 400px; /* Increased width */
   height: 350px; /* Increased height */
   text-align: center;
-  border-radius: 20px; /* Slightly larger border radius */
+  border-radius: 10px; /* Consistent border radius */
   box-shadow:
     0 8px 32px rgba(87, 30, 30, 0.2),
     inset 0 0 0 1px rgba(255, 255, 255, 0.1); /* Added inner border glow */
@@ -157,11 +162,11 @@ body {
 
 /* Improved Magic Button */
 .magic-btn {
-  margin-top: 30px;
+  margin-top: 20px; /* Adjust spacing between text and button */
   padding: 15px 35px;
   font-size: 1.3rem;
-  border-radius: 12px;
-  background: linear-gradient(45deg, #ff8c00, #ff0080, #ff8c00);
+  border-radius: 10px; /* Consistent border radius */
+  background: linear-gradient(45deg, #924e4e, #27021a, #2f1f1f63);
   background-size: 200% auto;
   border: none;
   color: white;
@@ -179,7 +184,13 @@ body {
 .magic-btn:hover {
   background-position: right center;
   transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(255, 136, 0, 0.4);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.magic-btn:hover {
+  background-position: right center;
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgb(255, 119, 119);
 }
 
 /* Added button click effect */
