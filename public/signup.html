@@ -6,65 +6,69 @@
     <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="gradient-background flex h-screen items-center justify-center">
-    <div class="w-full max-w-md rounded-xl bg-[#0e0e10] p-8 shadow-2xl border border-gray-800 backdrop-blur-md">
-      <h2 class="mb-6 text-center text-3xl font-bold text-white">Login to <span class="text-yellow-400">Padhle!</span></h2>
+  <body class="h-screen m-0 p-0 overflow-hidden">
+    <!-- Vanta Background Container -->
+    <div id="vanta-bg" class="h-full w-full flex items-center justify-center">
+      <!-- Login Card -->
+      <div class="w-full max-w-md rounded-xl bg-[#0e0e10] p-8 shadow-2xl border border-gray-800 backdrop-blur-md">
+        <h2 class="mb-6 text-center text-3xl font-bold text-white">
+          Login to <span class="text-yellow-400">Padhle!</span>
+        </h2>
 
         <button
           onclick="signInWithGoogle()"
           class="flex w-full my-2 items-center justify-center gap-2 rounded-lg bg-blue-1000 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 transition duration-200">
-
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-5 w-5" alt="Google logo" />
           Continue with Google
         </button>
 
-      <form action="#" method="POST" class="space-y-4">
-        <!-- Email Field -->
-        <div>
-          <label for="email" class="block text-sm font-medium text-white">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your Email"
-            class="mt-1 w-full rounded-lg bg-[#1a1a1d] text-yellow-400 border border-gray-700 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          />
-        </div>
+        <form action="#" method="POST" class="space-y-4">
+          <!-- Email Field -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-white">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your Email"
+              class="mt-1 w-full rounded-lg bg-[#1a1a1d] text-yellow-400 border border-gray-700 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
 
-        <!-- Password Field -->
-        <div>
-          <label for="password" class="block text-sm font-medium text-white">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your Password"
-            class="mt-1 w-full rounded-lg my-2 bg-[#1a1a1d] text-yellow-400 border border-gray-700 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          />
-        </div>
+          <!-- Password Field -->
+          <div>
+            <label for="password" class="block text-sm font-medium text-white">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your Password"
+              class="mt-1 w-full rounded-lg my-2 bg-[#1a1a1d] text-yellow-400 border border-gray-700 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
 
-        <!-- Submit Button -->
-        <button
-          type="submit"
-          class="w-full rounded-lg bg-white py-3 font-semibold text-black shadow-lg transition-all duration-300 hover:bg-red-700">
-          Continue
-        </button>
-      </form>
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-white py-3 font-semibold text-black shadow-lg transition-all duration-300 hover:bg-red-700">
+            Continue
+          </button>
+        </form>
 
-      <!-- Signup Link -->
-      <p class="mt-4 text-center text-sm text-gray-400">
-        Don’t have an account?
-        <a href="#" class="text-blue-500 hover:underline">Sign up</a>
-      </p>
+        <!-- Signup Link -->
+        <p class="mt-4 text-center text-sm text-gray-400">
+          Don’t have an account?
+          <a href="#" class="text-blue-500 hover:underline">Sign up</a>
+        </p>
+      </div>
     </div>
 
-        <!-- Firebase SDKs -->
+    <!-- Firebase SDKs -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
       import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
 
-      // Your Firebase Config
       const firebaseConfig = {
         apiKey: "AIzaSyBf2FyvjgVyxyYHUCDg-p5Pf2d9q3Pczjs",
         authDomain: "padhle-student-portal.firebaseapp.com",
@@ -75,19 +79,16 @@
         measurementId: "G-ZWZVR1SV4H"
       };
 
-      // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
       const provider = new GoogleAuthProvider();
 
-      // Function to trigger Google Sign-In
       window.signInWithGoogle = () => {
         signInWithPopup(auth, provider)
           .then((result) => {
             const user = result.user;
             console.log("✅ Signed in as:", user.displayName);
-            // Redirect or show welcome message
-            window.location.href = "dashboard.html";  // change if needed
+            window.location.href = "dashboard.html";
           })
           .catch((error) => {
             console.error("❌ Sign-in error:", error.message);
@@ -95,12 +96,12 @@
       };
     </script>
 
-    <!-- Background animation -->
+    <!-- Vanta Background Scripts -->
     <script src="../src/assets/p5.min.js"></script>
-<script src="../src/assets/vanta.topology.min.js"></script>
-<script>
+    <script src="../src/assets/vanta.topology.min.js"></script>
+    <script>
       VANTA.TOPOLOGY({
-        el: "body",
+        el: "#vanta-bg",
         mouseControls: true,
         touchControls: true,
         gyroControls: false,
@@ -109,10 +110,8 @@
         scale: 1.00,
         scaleMobile: 1.00,
         color: 0xeb0e0e,
-        backgroundColor: 0x0
-      })
-</script>
+        backgroundColor: 0x000000
+      });
+    </script>
   </body>
 </html>
-
-//Random Comments here to check commit 
