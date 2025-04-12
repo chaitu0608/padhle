@@ -1,9 +1,10 @@
 <?php
 session_start();
-if (!isset($_SESSION['sturecmsuid'])) {
+if (!isset($_SESSION['sturecmsstuid'])) {
     header("Location: login.php");
     exit();
 }
+include("../includes/dbconnection.php");
 ?>
 
 <!DOCTYPE html>
@@ -81,7 +82,7 @@ if (!isset($_SESSION['sturecmsuid'])) {
             
             <!-- Navigation Links -->
             <nav class="mt-6 px-4">
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white bg-somaiya-red bg-opacity-40 rounded-md transition-colors duration-200 hover:bg-somaiya-red hover:bg-opacity-20">
+                <a href="./dashboard.php" class="flex items-center px-4 py-3 mb-2 text-white bg-somaiya-red bg-opacity-100 rounded-md transition-colors duration-200 hover:bg-somaiya-red hover:bg-opacity-20">
                     <i class="fas fa-home w-5 h-5"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
@@ -89,11 +90,11 @@ if (!isset($_SESSION['sturecmsuid'])) {
                     <i class="fas fa-book w-5 h-5"></i>
                     <span class="ml-3">Homework</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-dark-border hover:text-white">
+                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
                     <i class="fas fa-bell w-5 h-5"></i>
                     <span class="ml-3">Notices</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-dark-border hover:text-white">
+                <a href="./student-profile.php" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
                     <i class="fas fa-user w-5 h-5"></i>
                     <span class="ml-3">Profile</span>
                 </a>
@@ -121,9 +122,12 @@ if (!isset($_SESSION['sturecmsuid'])) {
             <div class="bg-dark-lighter border-b border-dark-border p-4 flex justify-between items-center sticky top-0 z-20">
                 <h1 class="text-xl font-semibold text-highlight-yellow">Student Dashboard</h1>
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-400"><?php echo htmlentities($_SESSION['studentname']); ?></span>//dynamically display student name
-                    <div class="w-8 h-8 bg-somaiya-red rounded-full flex items-center justify-center text-white font-medium">
-                        RS
+                    <span class="text-sm text-gray-400"><?php echo htmlentities($_SESSION['studentname']); ?></span>
+                    <div class="w-8 h-8 bg-somaiya-red rounded-full flex items-center justify-center text-white font-medium"> 
+                        <?php 
+                        $nameParts = explode(' ', $row->StudentName);
+                        echo strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1)); 
+                        ?>
                     </div>
                 </div>
             </div>
@@ -132,7 +136,7 @@ if (!isset($_SESSION['sturecmsuid'])) {
             <div class="p-6 animate-fade-in">
                 <!-- Welcome Section -->
                 <div class="bg-dark-lighter border border-dark-border rounded-lg p-6 mb-8 transform transition-all duration-300 hover:shadow-lg">
-                    <h2 class="text-2xl font-bold mb-2">Welcome back, Rahul Sharma!</h2>
+                    <h2 class="text-2xl font-bold mb-2">Welcome back, <?php echo htmlentities($_SESSION['studentname']); ?></h2>
                     <p class="text-gray-400">You have 2 pending assignments and 3 new notices.</p>
                 </div>
                 
@@ -143,43 +147,34 @@ if (!isset($_SESSION['sturecmsuid'])) {
                         <a href="#" class="text-somaiya-red hover:underline text-sm transition-colors duration-200">View All</a>
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"> -->
                         <!-- Notice Card 1 -->
-                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                            <div class="p-4 border-b border-dark-border">
-                                <h3 class="font-semibold mb-1">Semester Exam Schedule</h3>
-                                <span class="text-xs text-gray-400">May 15, 2025</span>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-sm text-gray-300 mb-3">The final semester examination schedule has been released. Please check your email for details.</p>
-                                <a href="#" class="text-somaiya-red text-sm hover:underline transition-colors duration-200">View Details</a>
-                            </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"> <!--Dynamic cards-->
+                            <?php
+                            $sql = "SELECT * FROM tblpublicnotice ORDER BY CreationDate DESC LIMIT 3";
+                            $query = $dbh->prepare($sql);
+                            $query->execute();
+                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+                            if ($query->rowCount() > 0) {
+                                foreach ($results as $row) {
+                                echo '
+                                <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                                    <div class="p-4 border-b border-dark-border">
+                                    <h3 class="font-semibold mb-1">' . htmlentities($row->NoticeTitle) . '</h3>
+                                    <span class="text-xs text-gray-400">' . htmlentities($row->CreationDate) . '</span>
+                                    </div>
+                                    <div class="p-4">
+                                    <p class="text-sm text-gray-300 mb-3">' . htmlentities($row->NoticeMessage) . '</p>
+                                    <a href="#" class="text-somaiya-red text-sm hover:underline transition-colors duration-200">View Details</a>
+                                    </div>
+                                </div>';
+                                }
+                            } else {
+                                echo '<p class="text-gray-500">No notices available.</p>';
+                            }
+                            ?>
                         </div>
-                        
-                        <!-- Notice Card 2 -->
-                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                            <div class="p-4 border-b border-dark-border">
-                                <h3 class="font-semibold mb-1">Campus Maintenance</h3>
-                                <span class="text-xs text-gray-400">May 10, 2025</span>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-sm text-gray-300 mb-3">The library will be closed for maintenance from May 10-12. Please plan accordingly.</p>
-                                <a href="#" class="text-somaiya-red text-sm hover:underline transition-colors duration-200">View Details</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Notice Card 3 -->
-                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                            <div class="p-4 border-b border-dark-border">
-                                <h3 class="font-semibold mb-1">Scholarship Applications</h3>
-                                <span class="text-xs text-gray-400">May 5, 2025</span>
-                            </div>
-                            <div class="p-4">
-                                <p class="text-sm text-gray-300 mb-3">Scholarship applications for the next academic year are now open. Last date to apply is June 15.</p>
-                                <a href="#" class="text-somaiya-red text-sm hover:underline transition-colors duration-200">View Details</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 
                 <!-- Homework Section -->
@@ -190,77 +185,48 @@ if (!isset($_SESSION['sturecmsuid'])) {
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Homework Card 1 -->
-                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                            <div class="p-4 border-b border-dark-border flex justify-between items-start">
-                                <div>
-                                    <h3 class="font-semibold mb-1">Calculus Assignment</h3>
-                                    <span class="text-xs text-gray-400">Mathematics</span>
-                                </div>
-                                <span class="px-2 py-1 bg-somaiya-red bg-opacity-20 text-somaiya-red text-xs rounded-md">Pending</span>
-                            </div>
-                            <div class="p-4 flex justify-between items-center">
-                                <div class="flex items-center text-sm text-gray-400">
-                                    <i class="fas fa-calendar-alt mr-2"></i>
-                                    Due: May 12, 2025
-                                </div>
-                                <button class="px-3 py-1 bg-somaiya-red text-white text-sm rounded transition-colors duration-200 hover:bg-opacity-90">Submit</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Homework Card 2 -->
-                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                            <div class="p-4 border-b border-dark-border flex justify-between items-start">
-                                <div>
-                                    <h3 class="font-semibold mb-1">Mechanics Lab Report</h3>
-                                    <span class="text-xs text-gray-400">Physics</span>
-                                </div>
-                                <span class="px-2 py-1 bg-green-900 bg-opacity-20 text-green-400 text-xs rounded-md">Submitted</span>
-                            </div>
-                            <div class="p-4 flex justify-between items-center">
-                                <div class="flex items-center text-sm text-gray-400">
-                                    <i class="fas fa-calendar-alt mr-2"></i>
-                                    Due: May 10, 2025
-                                </div>
-                                <button class="px-3 py-1 border border-somaiya-red text-somaiya-red text-sm rounded transition-colors duration-200 hover:bg-somaiya-red hover:bg-opacity-10">View</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Homework Card 3 -->
-                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                            <div class="p-4 border-b border-dark-border flex justify-between items-start">
-                                <div>
-                                    <h3 class="font-semibold mb-1">Algorithm Analysis</h3>
-                                    <span class="text-xs text-gray-400">Computer Science</span>
-                                </div>
-                                <span class="px-2 py-1 bg-somaiya-red bg-opacity-20 text-somaiya-red text-xs rounded-md">Pending</span>
-                            </div>
-                            <div class="p-4 flex justify-between items-center">
-                                <div class="flex items-center text-sm text-gray-400">
-                                    <i class="fas fa-calendar-alt mr-2"></i>
-                                    Due: May 15, 2025
-                                </div>
-                                <button class="px-3 py-1 bg-somaiya-red text-white text-sm rounded transition-colors duration-200 hover:bg-opacity-90">Submit</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Homework Card 4 -->
-                        <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                            <div class="p-4 border-b border-dark-border flex justify-between items-start">
-                                <div>
-                                    <h3 class="font-semibold mb-1">Essay on Modern Literature</h3>
-                                    <span class="text-xs text-gray-400">English</span>
-                                </div>
-                                <span class="px-2 py-1 bg-green-900 bg-opacity-20 text-green-400 text-xs rounded-md">Submitted</span>
-                            </div>
-                            <div class="p-4 flex justify-between items-center">
-                                <div class="flex items-center text-sm text-gray-400">
-                                    <i class="fas fa-calendar-alt mr-2"></i>
-                                    Due: May 8, 2025
-                                </div>
-                                <button class="px-3 py-1 border border-somaiya-red text-somaiya-red text-sm rounded transition-colors duration-200 hover:bg-somaiya-red hover:bg-opacity-10">View</button>
-                            </div>
-                        </div>
+                        <!-- Dynamic Cards -->
+                        <?php
+                        $uid = $_SESSION['sturecmsuid'];
+
+                        // First, get the classId of the student
+                        $sql = "SELECT StudentClass FROM tblstudent WHERE ID = :uid";
+                        $query = $dbh->prepare($sql);
+                        $query->bindParam(':uid', $uid, PDO::PARAM_INT);
+                        $query->execute();
+                        $student = $query->fetch(PDO::FETCH_OBJ);
+                        $classId = $student->StudentClass;
+
+                        // Now fetch homework assigned to that class
+                        $sql = "SELECT * FROM tblhomework WHERE classId = :classId ORDER BY postingDate DESC LIMIT 4";
+                        $query = $dbh->prepare($sql);
+                        $query->bindParam(':classId', $classId, PDO::PARAM_INT);
+                        $query->execute();
+                        $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+                        if ($query->rowCount() > 0) {
+                            foreach ($results as $row) {
+                                echo '<div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                                        <div class="p-4 border-b border-dark-border flex justify-between items-start">
+                                            <div>
+                                                <h3 class="font-semibold mb-1">' . htmlentities($row->homeworkTitle) . '</h3>
+                                                <span class="text-xs text-gray-400">Posted: ' . htmlentities($row->postingDate) . '</span>
+                                            </div>
+                                            <span class="px-2 py-1 bg-somaiya-red bg-opacity-20 text-somaiya-red text-xs rounded-md">Pending</span>
+                                        </div>
+                                        <div class="p-4 flex justify-between items-center">
+                                            <div class="flex items-center text-sm text-gray-400">
+                                                <i class="fas fa-calendar-alt mr-2"></i>
+                                                Due: ' . htmlentities($row->lastDateofSubmission) . '
+                                            </div>
+                                            <button class="px-3 py-1 bg-somaiya-red text-white text-sm rounded transition-colors duration-200 hover:bg-opacity-90">Submit</button>
+                                        </div>
+                                    </div>';
+                            }
+                        } else {
+                            echo '<p class="text-gray-400">No homework assigned for your class.</p>';
+                        }
+                        ?> 
                     </div>
                 </div>
                 

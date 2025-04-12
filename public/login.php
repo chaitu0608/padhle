@@ -1,7 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
-error_reporting(0);
-include('includes/dbconnection.php');
+include('../includes/dbconnection.php');
 
 if (isset($_POST['email']) && isset($_POST['password'])) {
     $email = $_POST['email'];
@@ -15,7 +18,6 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     $result = $query->fetch(PDO::FETCH_OBJ);
 
     if ($result) {
-        // Login successful
         $_SESSION['sturecmsuid'] = $result->ID;
         $_SESSION['sturecmsstuid'] = $result->StuID;
         $_SESSION['studentname'] = $result->StudentName;
@@ -23,7 +25,8 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         header("Location: dashboard.php");
         exit();
     } else {
-        echo "<script>alert('Invalid login details');</script>";
+        echo "<script>alert('Invalid login details'); window.location='login.php';</script>";
+        exit();
     }
 }
 ?>
