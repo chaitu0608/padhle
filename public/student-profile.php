@@ -98,11 +98,11 @@ $row = $query->fetch(PDO::FETCH_OBJ);
                     <i class="fas fa-home w-5 h-5"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
+                <a href="./homework.php" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
                     <i class="fas fa-book w-5 h-5"></i>
                     <span class="ml-3">Homework</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
+                <a href="./notices.php" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
                     <i class="fas fa-bell w-5 h-5"></i>
                     <span class="ml-3">Notices</span>
                 </a>

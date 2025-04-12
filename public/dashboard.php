@@ -86,11 +86,11 @@ include("../includes/dbconnection.php");
                     <i class="fas fa-home w-5 h-5"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
+                <a href="./homework.php" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
                     <i class="fas fa-book w-5 h-5"></i>
                     <span class="ml-3">Homework</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
+                <a href="./notices.php" class="flex items-center px-4 py-3 mb-2 text-gray-400 rounded-md transition-colors duration-200 hover:bg-white hover:text-black">
                     <i class="fas fa-bell w-5 h-5"></i>
                     <span class="ml-3">Notices</span>
                 </a>
@@ -144,7 +144,7 @@ include("../includes/dbconnection.php");
                 <div class="mb-8">
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xl font-bold text-highlight-yellow">Latest Notices</h2>
-                        <a href="#" class="text-somaiya-red hover:underline text-sm transition-colors duration-200">View All</a>
+                        <a href="./notices.php" class="text-somaiya-red hover:underline text-sm transition-colors duration-200">View All</a>
                     </div>
                     
                     <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"> -->
@@ -181,7 +181,7 @@ include("../includes/dbconnection.php");
                 <div>
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xl font-bold text-highlight-yellow">Homework</h2>
-                        <a href="#" class="text-somaiya-red hover:underline text-sm transition-colors duration-200">View All</a>
+                        <a href="./homework.php" class="text-somaiya-red hover:underline text-sm transition-colors duration-200">View All</a>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
