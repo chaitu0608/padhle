@@ -201,7 +201,7 @@ $homeworks = $hwQuery->fetchAll(PDO::FETCH_OBJ);
                                 <div class="col-span-2 text-gray-300"><?php echo date("d M Y", strtotime($row->lastDateofSubmission)); ?></div>
                                 <div class="col-span-2 text-gray-400"><?php echo date("d M Y", strtotime($row->postingDate)); ?></div>
                                 <div class="col-span-1 text-right">
-                                    <a href="submit-homework.php?hwid=<?php echo $row->id; ?>" class="px-3 py-1 bg-somaiya-red text-white text-sm rounded transition-colors duration-200 hover:bg-opacity-90">submit</a>
+                                    <a href="submit-homework.php?hwid=<?php echo $row->id; ?>" class="px-3 py-1 bg-somaiya-red text-white text-sm rounded transition-colors duration-200 hover:bg-opacity-90">Submit</a>
                                 </div>
                             </div>
                             <?php
