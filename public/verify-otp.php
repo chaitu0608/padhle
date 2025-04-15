@@ -1,27 +1,16 @@
 <?php
 session_start();
-
-if (!isset($_SESSION['otp'])) {
-    header("Location: forgot-password.php");
-    exit();
-}
-
 if (isset($_POST['verify'])) {
-    $otp_input = $_POST['otp'];
-    if ($_SESSION['otp'] == $otp_input) {
-        $_SESSION['otp_verified'] = true;
-        header("Location: update-password.php");
-        exit();
+    $enteredOtp = $_POST['otp'];
+    if ($_SESSION['otp'] == $enteredOtp) {
+        echo "<script>window.location.href='update-password.php';</script>";
     } else {
-        $msg = "Incorrect OTP.";
+        echo "<script>alert('Invalid OTP. Try again.');</script>";
     }
 }
 ?>
 
 <form method="post">
-    <h2>Verify OTP</h2>
-    <p>Use this OTP: <strong><?php echo $_SESSION['otp']; ?></strong> (for now)</p>
-    <input type="number" name="otp" placeholder="Enter OTP" required>
-    <button name="verify">Verify</button>
-    <?php if (isset($msg)) echo "<p style='color:red;'>$msg</p>"; ?>
+    <input type="text" name="otp" placeholder="Enter OTP" required>
+    <button type="submit" name="verify">Verify OTP</button>
 </form>

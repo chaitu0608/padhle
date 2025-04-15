@@ -1,30 +1,27 @@
 <?php
 session_start();
-include("includes/dbconnection.php");
-
-if (!isset($_SESSION['otp_verified'])) {
-    header("Location: forgot-password.php");
-    exit();
-}
+include('../includes/dbconnection.php');
 
 if (isset($_POST['update'])) {
-    $newpass = password_hash($_POST['newpass'], PASSWORD_DEFAULT);
-    $email = $_SESSION['reset_email'];
+    $newpassword = md5($_POST['newpassword']);
+    $email = $_SESSION['email'];
 
-    $sql = "UPDATE tblstudent SET Password = :newpass WHERE Email = :email";
+    $sql = "UPDATE tblstudent SET Password = :newpassword WHERE Email = :email";
     $query = $dbh->prepare($sql);
-    $query->bindParam(':newpass', $newpass, PDO::PARAM_STR);
+    $query->bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
-    $query->execute();
 
-    unset($_SESSION['otp_verified'], $_SESSION['otp'], $_SESSION['reset_email']);
-    $msg = "Password updated! You can now <a href='login.php'>login</a>.";
+    if ($query->execute()) {
+        echo "<script>alert('Password updated successfully.');</script>";
+        session_destroy();
+        echo "<script>window.location.href='login.php';</script>";
+    } else {
+        echo "<script>alert('Something went wrong.');</script>";
+    }
 }
 ?>
 
 <form method="post">
-    <h2>Reset Password</h2>
-    <input type="password" name="newpass" placeholder="New Password" required>
-    <button name="update">Update Password</button>
-    <?php if (isset($msg)) echo "<p style='color:green;'>$msg</p>"; ?>
+    <input type="password" name="newpassword" placeholder="Enter new password" required>
+    <button type="submit" name="update">Update Password</button>
 </form>
