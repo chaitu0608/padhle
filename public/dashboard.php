@@ -74,10 +74,10 @@ include("../includes/dbconnection.php");
         <aside id="sidebar" class="bg-dark-lighter w-64 border-r border-dark-border h-full flex-shrink-0 fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
             <!-- Logo -->
             <div class="p-4 border-b border-dark-border">
-                <div class="flex items-center">
+                <a href="./dashboard.php" class="flex items-center">
                     <div class="w-10 h-10 bg-somaiya-red rounded-md flex items-center justify-center text-white font-bold text-xl">P</div>
                     <span class="ml-3 text-xl font-bold text-highlight-yellow">Padhle</span>
-                </div>
+                </a>
             </div>
             
             <!-- Navigation Links -->
