@@ -1,33 +1,24 @@
 <?php
 session_start();
-include('../includes/dbconnection.php');
+include('includes/dbconnection.php');
 
-if (!isset($_SESSION['sturecmsstuid'])) {
-    header('Location: login.php');
+if (strlen($_SESSION['email'] == 0)) {
+    header('location:logout.php');
     exit();
 }
 
 if (isset($_POST['submit'])) {
-    $sid = $_SESSION['sturecmsstuid'];
-    $cpassword = md5($_POST['currentpassword']);
+    $email = $_SESSION['email'];
     $newpassword = md5($_POST['newpassword']);
 
-    $sql = "SELECT StuID FROM tblstudent WHERE StuID=:sid AND Password=:cpassword";
+    $sql = "UPDATE tblstudent SET Password = :newpassword WHERE StudentEmail = :email";
     $query = $dbh->prepare($sql);
-    $query->bindParam(':sid', $sid, PDO::PARAM_STR);
-    $query->bindParam(':cpassword', $cpassword, PDO::PARAM_STR);
+    $query->bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
+    $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->execute();
 
-    if ($query->rowCount() > 0) {
-        $con = "UPDATE tblstudent SET Password=:newpassword WHERE StuID=:sid";
-        $chngpwd1 = $dbh->prepare($con);
-        $chngpwd1->bindParam(':sid', $sid, PDO::PARAM_STR);
-        $chngpwd1->bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
-        $chngpwd1->execute();
-        $message = "Password successfully changed!";
-    } else {
-        $message = "Current password is incorrect!";
-    }
+    echo "<script>alert('Password successfully changed');</script>";
+    echo "<script>window.location.href = 'login.php'</script>";
 }
 ?>
 

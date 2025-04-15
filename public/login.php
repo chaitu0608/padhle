@@ -87,6 +87,11 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
             class="w-full rounded-lg bg-white py-3 font-semibold text-black shadow-lg transition-all duration-300 hover:bg-red-700">
             Continue
           </button>
+
+          <!--forgot password -->
+          <div class="text-right mt-2">
+            <a href="forgot-password.php" class="text-sm text-red-500 hover:underline">Forgot Password?</a>
+          </div>
         </form>
       </div>
     </div>
