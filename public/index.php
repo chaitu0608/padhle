@@ -147,6 +147,6 @@ include('../includes/dbconnection.php'); // You’ll create this file in the nex
     </script>
 
     <!-- Custom Script -->
-    <script src="../src/assets/script.js"></script>
+    <script src="../src/assets/cursor.js"></script>
   </body>
 </html>

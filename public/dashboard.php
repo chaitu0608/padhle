@@ -18,6 +18,7 @@ include("../includes/dbconnection.php");
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="../src/assets/styles.css" rel="stylesheet" />
     
     <script>
         tailwind.config = {
@@ -273,6 +274,7 @@ include("../includes/dbconnection.php");
             }
         });
     </script>
+    <script src="../src/assets/cursor.js"></script>
     <!--GSAP Animations-->
     <!-- <script>
         document.addEventListener('DOMContentLoaded', () => {
