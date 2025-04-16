@@ -31,7 +31,7 @@ $notices = $query->fetchAll(PDO::FETCH_OBJ);
                 extend: {
                     colors: {
                         dark: '#121212',
-                        'dark-lighter': '#1A1A1A',
+                        'dark-lighter': '#000000',
                         'dark-border': '#333333',
                         'somaiya-red': '#D90429',
                         'highlight-yellow': '#FFD700',
