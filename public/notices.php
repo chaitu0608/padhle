@@ -99,6 +99,20 @@ $notices = $query->fetchAll(PDO::FETCH_OBJ);
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto md:ml-64">
+            <!-- Top bar -->
+            <div class="bg-dark-lighter border-b border-dark-border p-4 flex justify-between items-center sticky top-0 z-20">
+                <h1 class="text-xl font-semibold text-highlight-yellow">Notices</h1>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-400"><?php echo htmlentities($_SESSION['studentname']); ?></span>
+                    <div class="w-8 h-8 bg-somaiya-red rounded-full flex items-center justify-center text-white font-medium">
+                        <?php 
+                        $nameParts = explode(' ', $_SESSION['studentname']);
+                        echo strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1)); 
+                        ?>
+                    </div>
+                </div>
+            </div>
+
             <div class="p-6">
                 <!-- Header Section -->
                 <div class="mb-8">

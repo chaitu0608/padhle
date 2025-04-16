@@ -45,7 +45,7 @@ $homeworks = $hwQuery->fetchAll(PDO::FETCH_OBJ);
                 extend: {
                     colors: {
                         dark: '#121212',
-                        'dark-lighter': '#1A1A1A',
+                        'dark-lighter': '#000000',
                         'dark-border': '#333333',
                         'somaiya-red': '#D90429',
                         'highlight-yellow': '#FFD700',
@@ -113,34 +113,25 @@ $homeworks = $hwQuery->fetchAll(PDO::FETCH_OBJ);
 
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto md:ml-64">
+            <!-- Top bar -->
+            <div class="bg-dark-lighter border-b border-dark-border p-4 flex justify-between items-center sticky top-0 z-20">
+                <h1 class="text-xl font-semibold text-highlight-yellow">Homework</h1>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-400"><?php echo htmlentities($_SESSION['studentname']); ?></span>
+                    <div class="w-8 h-8 bg-somaiya-red rounded-full flex items-center justify-center text-white font-medium">
+                        <?php 
+                        $nameParts = explode(' ', $_SESSION['studentname']);
+                        echo strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1)); 
+                        ?>
+                    </div>
+                </div>
+            </div>
+
             <div class="p-6">
                 <!-- Header Section -->
                 <div class="mb-8">
                     <h2 class="text-2xl font-bold text-highlight-yellow">Assigned Homework</h2>
                     <p class="text-gray-400">View and manage all your assigned homework tasks.</p>
-                </div>
-
-                <!-- Filter/Search Section -->
-                <div class="mb-8 flex flex-col sm:flex-row gap-4">
-                    <div class="relative flex-1">
-                        <input type="text" placeholder="Search homework..." class="w-full bg-dark-lighter border border-dark-border rounded-md py-2 px-4 pl-10 text-white focus:outline-none focus:border-somaiya-red">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    </div>
-                    <div class="flex gap-4">
-                        <select class="bg-dark-lighter border border-dark-border rounded-md py-2 px-4 text-white focus:outline-none focus:border-somaiya-red">
-                            <option value="all">All Classes</option>
-                            <option value="math">Mathematics</option>
-                            <option value="physics">Physics</option>
-                            <option value="chemistry">Chemistry</option>
-                            <option value="biology">Biology</option>
-                        </select>
-                        <select class="bg-dark-lighter border border-dark-border rounded-md py-2 px-4 text-white focus:outline-none focus:border-somaiya-red">
-                            <option value="all">All Status</option>
-                            <option value="pending">Pending</option>
-                            <option value="submitted">Submitted</option>
-                            <option value="overdue">Overdue</option>
-                        </select>
-                    </div>
                 </div>
 
                 <!-- Homework Table -->

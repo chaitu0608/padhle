@@ -1,0 +1,68 @@
+/* Background Gradient */
+body {
+  background: linear-gradient(
+    250deg,
+    #0d0d0d,
+    #3b1e17,
+    #5e0e0e,
+    #8a2c0f,
+    #b8860b
+  );
+  background-size: 180% 180%;
+  animation: gradient-animation 5s ease infinite;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+}
+
+/* Gradient Animation */
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d90429;
+}
+
+/* Shared Colors */
+:root {
+  --dark: #121212;
+  --dark-lighter: #1a1a1a;
+  --dark-border: #333333;
+  --somaiya-red: #d90429;
+  --highlight-yellow: #ffd700;
+}
+
+/* Shared Card Styles */
+.card {
+  background-color: var(--dark-lighter);
+  border: 1px solid var(--dark-border);
+  border-radius: 8px;
+  padding: 16px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}

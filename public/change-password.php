@@ -38,6 +38,7 @@ if (isset($_POST['submit'])) {
 ?>
 
 <form method="post">
+    
     <input type="password" name="currentpassword" placeholder="Current Password" required><br><br>
     <input type="password" name="newpassword" placeholder="New Password" required><br><br>
     <button type="submit" name="submit">Change Password</button>

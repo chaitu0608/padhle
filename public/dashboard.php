@@ -13,10 +13,12 @@ include("../includes/dbconnection.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Padhle - Student Dashboard</title>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -69,6 +71,9 @@ include("../includes/dbconnection.php");
     <!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script> -->
 </head>
 <body class="bg-dark text-white font-sans">
+    <!-- Cursor Styles added -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <aside id="sidebar" class="bg-dark-lighter w-64 border-r border-dark-border h-full flex-shrink-0 fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
@@ -285,5 +290,6 @@ include("../includes/dbconnection.php");
          });
         });
       </script> -->
+      
 </body>
 </html>
