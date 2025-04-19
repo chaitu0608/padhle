@@ -1,6 +1,8 @@
 <?php
 session_start();
-include('../includes/dbconnection.php');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+include('../../includes/dbconnection.php');
 
 if (!isset($_SESSION['sturecmsaid'])) {
     header('location:login.php');
@@ -83,7 +85,7 @@ if (!isset($_SESSION['sturecmsaid'])) {
                     <i class="fas fa-tachometer-alt w-5 h-5"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                <a href="./manage-class.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-chalkboard w-5 h-5"></i>
                     <span class="ml-3">Class</span>
                 </a>
@@ -163,14 +165,15 @@ if (!isset($_SESSION['sturecmsaid'])) {
                         <div class="bg-dark-lighter border border-dark-border rounded-lg p-4 transition-all duration-300 hover:border-somaiya-red hover:shadow-md">
                             <div class="flex items-start justify-between">
                                 <div>
-                                <?php
-                                    $sql1 = "SELECT ID FROM tblclass";
-                                    $query1 = $dbh->prepare($sql1);
-                                    $query1->execute();
-                                    $totclass = $query1->rowCount();
+                                <p class="text-3xl font-bold mb-1">
+                                    <?php
+                                    $sql = "SELECT COUNT(*) as total FROM tblclass";
+                                    $query = $dbh->prepare($sql);
+                                    $query->execute();
+                                    $classCount = $query->fetch(PDO::FETCH_OBJ)->total;
+                                    echo htmlentities($classCount);
                                     ?>
-                                    <?php echo htmlentities($totclass); ?></p>
-                                    <p class="text-3xl font-bold mb-1">
+                                </p>
                                     <p class="text-gray-400 text-sm">Total Classes</p>
                                 </div>
                                 <div class="w-10 h-10 bg-somaiya-red bg-opacity-20 rounded-full flex items-center justify-center text-somaiya-red">
@@ -189,7 +192,13 @@ if (!isset($_SESSION['sturecmsaid'])) {
                         <div class="bg-dark-lighter border border-dark-border rounded-lg p-4 transition-all duration-300 hover:border-somaiya-red hover:shadow-md">
                             <div class="flex items-start justify-between">
                                 <div>
-                                    <p class="text-3xl font-bold mb-1">156</p>
+                                    <p class="text-3xl font-bold mb-1"><?php
+                                    $sql2 = "SELECT ID FROM tblstudent";
+                                    $query2 = $dbh->prepare($sql2);
+                                    $query2->execute();
+                                    $totstudents = $query2->rowCount();
+                                    ?>
+                                    <p class="text-3xl font-bold mb-1"><?php echo htmlentities($totstudents); ?></p></p>
                                     <p class="text-gray-400 text-sm">Total Students</p>
                                 </div>
                                 <div class="w-10 h-10 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center text-blue-500">
@@ -208,7 +217,13 @@ if (!isset($_SESSION['sturecmsaid'])) {
                         <div class="bg-dark-lighter border border-dark-border rounded-lg p-4 transition-all duration-300 hover:border-somaiya-red hover:shadow-md">
                             <div class="flex items-start justify-between">
                                 <div>
-                                    <p class="text-3xl font-bold mb-1">24</p>
+                                    <p class="text-3xl font-bold mb-1"><?php
+                                    $sql3 = "SELECT ID FROM tblhomework";
+                                    $query3 = $dbh->prepare($sql3);
+                                    $query3->execute();
+                                    $totalhomework = $query3->rowCount();
+                                    ?>
+                                    <p class="text-3xl font-bold mb-1"><?php echo htmlentities($totalhomework); ?></p></p>
                                     <p class="text-gray-400 text-sm">Active Homework</p>
                                 </div>
                                 <div class="w-10 h-10 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center text-green-500">
@@ -227,7 +242,13 @@ if (!isset($_SESSION['sturecmsaid'])) {
                         <div class="bg-dark-lighter border border-dark-border rounded-lg p-4 transition-all duration-300 hover:border-somaiya-red hover:shadow-md">
                             <div class="flex items-start justify-between">
                                 <div>
-                                    <p class="text-3xl font-bold mb-1">12</p>
+                                    <p class="text-3xl font-bold mb-1"><?php
+                                    $sql4 = "SELECT ID FROM tblnotice";
+                                    $query4 = $dbh->prepare($sql4);
+                                    $query4->execute();
+                                    $totalnotices = $query4->rowCount();
+                                    ?>
+                                    <p class="text-3xl font-bold mb-1"><?php echo htmlentities($totalnotices); ?></p></p>
                                     <p class="text-gray-400 text-sm">Active Notices</p>
                                 </div>
                                 <div class="w-10 h-10 bg-purple-500 bg-opacity-20 rounded-full flex items-center justify-center text-purple-500">
@@ -272,42 +293,50 @@ if (!isset($_SESSION['sturecmsaid'])) {
                             <a href="#" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200">View All</a>
                         </div>
                         <div class="divide-y divide-dark-border">
-                            <div class="p-4 flex items-center justify-between hover:bg-dark transition-colors duration-200">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-medium mr-3">
-                                        RS
+                        <?php
+                            $sql = "SELECT * FROM tblstudent ORDER BY ID DESC LIMIT 3";
+                            $query = $dbh->prepare($sql);
+                            $query->execute();
+                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+                            foreach ($results as $row) {
+                                $name = htmlentities($row->StudentName);
+                                $class = htmlentities($row->StudentClass);
+                                $gender = htmlentities($row->Gender);
+                                $stuID = htmlentities($row->StuID);
+
+                                // Age calculation
+                                $dob = $row->DOB;
+                                $age = 'N/A';
+                                if ($dob && strtotime($dob)) {
+                                    $age = floor((time() - strtotime($dob)) / (365*24*60*60)); // rough age
+                                }
+
+                                $dateRaw = $row->DateofAdmission ?? null;
+                                $dateAdded = $dateRaw ? date('M d, Y', strtotime($dateRaw)) : 'Date unknown';
+
+                                $parts = explode(' ', $name);
+                                $initials = strtoupper(substr($parts[0], 0, 1));
+                                if (isset($parts[1])) {
+                                    $initials .= strtoupper(substr($parts[1], 0, 1));
+                                }
+
+                                echo '
+                                <div class="p-4 flex items-center justify-between hover:bg-dark transition-colors duration-200">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-medium mr-3">
+                                            ' . $initials . '
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">' . $name . ' <span class="text-xs text-gray-400">(ID: ' . $stuID . ')</span></p>
+                                            <p class="text-xs text-gray-400">Class ' . $class . ' • ' . $gender . ' • ' . $age . ' yrs</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p class="font-medium">Rahul Sharma</p>
-                                        <p class="text-xs text-gray-400">Computer Science - Year 3</p>
-                                    </div>
-                                </div>
-                                <span class="text-xs text-gray-400">Added 2 days ago</span>
-                            </div>
-                            <div class="p-4 flex items-center justify-between hover:bg-dark transition-colors duration-200">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-medium mr-3">
-                                        AP
-                                    </div>
-                                    <div>
-                                        <p class="font-medium">Ananya Patel</p>
-                                        <p class="text-xs text-gray-400">Physics - Year 2</p>
-                                    </div>
-                                </div>
-                                <span class="text-xs text-gray-400">Added 3 days ago</span>
-                            </div>
-                            <div class="p-4 flex items-center justify-between hover:bg-dark transition-colors duration-200">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-medium mr-3">
-                                        VK
-                                    </div>
-                                    <div>
-                                        <p class="font-medium">Vikram Kumar</p>
-                                        <p class="text-xs text-gray-400">Mathematics - Year 1</p>
-                                    </div>
-                                </div>
-                                <span class="text-xs text-gray-400">Added 5 days ago</span>
-                            </div>
+                                    <span class="text-xs text-gray-400">Added on ' . $dateAdded . '</span>
+                                </div>';
+                            }
+                            ?>
+                            
                         </div>
                     </div>
                     
@@ -318,40 +347,33 @@ if (!isset($_SESSION['sturecmsaid'])) {
                             <a href="#" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200">View All</a>
                         </div>
                         <div class="divide-y divide-dark-border">
-                            <div class="p-4 hover:bg-dark transition-colors duration-200">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-medium">Calculus Assignment 3</h4>
-                                    <span class="px-2 py-1 bg-green-900 bg-opacity-20 text-green-400 text-xs rounded">Active</span>
-                                </div>
-                                <p class="text-sm text-gray-400 mb-2">Mathematics - Due: Dec 15, 2025</p>
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-gray-400">Assigned to 32 students</span>
-                                    <span class="text-gray-400">Posted 2 days ago</span>
-                                </div>
-                            </div>
-                            <div class="p-4 hover:bg-dark transition-colors duration-200">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-medium">Mechanics Lab Report</h4>
-                                    <span class="px-2 py-1 bg-green-900 bg-opacity-20 text-green-400 text-xs rounded">Active</span>
-                                </div>
-                                <p class="text-sm text-gray-400 mb-2">Physics - Due: Dec 10, 2025</p>
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-gray-400">Assigned to 28 students</span>
-                                    <span class="text-gray-400">Posted 3 days ago</span>
-                                </div>
-                            </div>
-                            <div class="p-4 hover:bg-dark transition-colors duration-200">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="font-medium">Algorithm Analysis</h4>
-                                    <span class="px-2 py-1 bg-green-900 bg-opacity-20 text-green-400 text-xs rounded">Active</span>
-                                </div>
-                                <p class="text-sm text-gray-400 mb-2">Computer Science - Due: Dec 18, 2025</p>
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-gray-400">Assigned to 45 students</span>
-                                    <span class="text-gray-400">Posted 4 days ago</span>
-                                </div>
-                            </div>
-                        </div>
+                        <?php
+$sql = "SELECT * FROM tblhomework ORDER BY id DESC LIMIT 3";
+$query = $dbh->prepare($sql);
+$query->execute();
+$results = $query->fetchAll(PDO::FETCH_OBJ);
+
+foreach ($results as $row) {
+    $title = htmlentities($row->homeworkTitle ?? 'Untitled');
+    $subject = "Class " . htmlentities($row->classId ?? 'N/A');
+    $dueDate = !empty($row->lastDateOfSubmission) ? date('M d, Y', strtotime($row->lastDateOfSubmission)) : 'N/A';
+    $postedDate = !empty($row->postingDate) ? date('M d, Y', strtotime($row->postingDate)) : 'N/A';
+    $description = htmlentities($row->homeworkDescription ?? 'No description');
+
+    echo '
+    <div class="p-4 hover:bg-dark transition-colors duration-200">
+        <div class="flex justify-between items-start mb-2">
+            <h4 class="font-medium">' . $title . '</h4>
+            <span class="px-2 py-1 bg-green-900 bg-opacity-20 text-green-400 text-xs rounded">Active</span>
+        </div>
+        <p class="text-sm text-gray-400 mb-2">' . $subject . ' - Due: ' . $dueDate . '</p>
+        <div class="flex justify-between items-center text-xs">
+            <span class="text-gray-400">' . $description . '</span>
+            <span class="text-gray-400">Posted ' . $postedDate . '</span>
+        </div>
+    </div>';
+}
+?>
                     </div>
                 </div>
                 
