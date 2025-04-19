@@ -32,6 +32,10 @@ $row = $query->fetch(PDO::FETCH_OBJ);
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="../src/assets/styles.css" rel="stylesheet" />
+    
+    
+    
     <script>
         tailwind.config = {
             theme: {
@@ -81,6 +85,9 @@ $row = $query->fetch(PDO::FETCH_OBJ);
     </style>
 </head>
 <body class="bg-dark text-white font-sans">
+        <div class="cursor-dot"></div>
+        <div class="cursor-outline"></div>
+
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <aside id="sidebar" class="bg-dark-lighter w-64 border-r border-dark-border h-full flex-shrink-0 fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
@@ -308,5 +315,6 @@ $row = $query->fetch(PDO::FETCH_OBJ);
             }
         });
     </script>
+    <script src="../src/assets/cursor.js"></script>
 </body>
 </html>

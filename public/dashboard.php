@@ -13,21 +13,18 @@ include("../includes/dbconnection.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Padhle - Student Dashboard</title>
-    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="../src/assets/styles.css" rel="stylesheet" />
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         dark: '#121212',
-                        'dark-lighter': '#000000',   //'#1e1e1e'
-                        'dark-border': '#333333',    //'#333333'
+                        'dark-lighter': '#000000',
+                        'dark-border': '#333333',
                         'somaiya-red': '#D90429',
                         'highlight-yellow': '#FFD700',
                     },
@@ -47,7 +44,6 @@ include("../includes/dbconnection.php");
             }
         }
     </script>
-
     <style>
         /* Import Inter font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -67,23 +63,17 @@ include("../includes/dbconnection.php");
             background: #D90429;
         }
     </style>
-
-    <!-- GSAP Library -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script> -->
 </head>
 <body class="bg-dark text-white font-sans">
-    <!-- Cursor Styles added -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <aside id="sidebar" class="bg-dark-lighter w-64 border-r border-dark-border h-full flex-shrink-0 fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
             <!-- Logo -->
             <div class="p-4 border-b border-dark-border">
-                <a href="./dashboard.php" class="flex items-center">
+                <div class="flex items-center">
                     <div class="w-10 h-10 bg-somaiya-red rounded-md flex items-center justify-center text-white font-bold text-xl">P</div>
                     <span class="ml-3 text-xl font-bold text-highlight-yellow">Padhle</span>
-                </a>
+                </div>
             </div>
             
             <!-- Navigation Links -->
@@ -131,7 +121,7 @@ include("../includes/dbconnection.php");
                     <span class="text-sm text-gray-400"><?php echo htmlentities($_SESSION['studentname']); ?></span>
                     <div class="w-8 h-8 bg-somaiya-red rounded-full flex items-center justify-center text-white font-medium"> 
                         <?php 
-                        $nameParts = explode(' ', $row->StudentName);
+                        $nameParts = explode(' ', $_SESSION['studentname']);
                         echo strtoupper(substr($nameParts[0], 0, 1)) . strtoupper(substr($nameParts[1] ?? '', 0, 1)); 
                         ?>
                     </div>
@@ -143,7 +133,6 @@ include("../includes/dbconnection.php");
                 <!-- Welcome Section -->
                 <div class="bg-dark-lighter border border-dark-border rounded-lg p-6 mb-8 transform transition-all duration-300 hover:shadow-lg">
                     <h2 class="text-2xl font-bold mb-2">Welcome back, <?php echo htmlentities($_SESSION['studentname']); ?></h2>
-                    <p class="text-gray-400">You have 2 pending assignments and 3 new notices.</p>
                 </div>
                 
                 <!-- Notices Section -->
@@ -152,35 +141,33 @@ include("../includes/dbconnection.php");
                         <h2 class="text-xl font-bold text-highlight-yellow">Latest Notices</h2>
                         <a href="./notices.php" class="text-somaiya-red hover:underline text-sm transition-colors duration-200">View All</a>
                     </div>
-                    
-                    <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"> -->
-                        <!-- Notice Card 1 -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"> <!--Dynamic cards-->
-                            <?php
-                            $sql = "SELECT * FROM tblpublicnotice ORDER BY CreationDate DESC LIMIT 3";
-                            $query = $dbh->prepare($sql);
-                            $query->execute();
-                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Dynamic Notices -->
+                        <?php
+                        $sql = "SELECT * FROM tblpublicnotice ORDER BY CreationDate DESC LIMIT 3";
+                        $query = $dbh->prepare($sql);
+                        $query->execute();
+                        $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                            if ($query->rowCount() > 0) {
-                                foreach ($results as $row) {
+                        if ($query->rowCount() > 0) {
+                            foreach ($results as $row) {
                                 echo '
                                 <div class="card bg-dark-lighter border border-dark-border rounded-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                                     <div class="p-4 border-b border-dark-border">
-                                    <h3 class="font-semibold mb-1">' . htmlentities($row->NoticeTitle) . '</h3>
-                                    <span class="text-xs text-gray-400">' . htmlentities($row->CreationDate) . '</span>
+                                        <h3 class="font-semibold mb-1">' . htmlentities($row->NoticeTitle) . '</h3>
+                                        <span class="text-xs text-gray-400">' . htmlentities($row->CreationDate) . '</span>
                                     </div>
                                     <div class="p-4">
-                                    <p class="text-sm text-gray-300 mb-3">' . htmlentities($row->NoticeMessage) . '</p>
-                                    <a href="#" class="text-somaiya-red text-sm hover:underline transition-colors duration-200">View Details</a>
+                                        <p class="text-sm text-gray-300 mb-3">' . htmlentities($row->NoticeMessage) . '</p>
+                                        <a href="#" class="text-somaiya-red text-sm hover:underline transition-colors duration-200">View Details</a>
                                     </div>
                                 </div>';
-                                }
-                            } else {
-                                echo '<p class="text-gray-500">No notices available.</p>';
                             }
-                            ?>
-                        </div>
+                        } else {
+                            echo '<p class="text-gray-500">No notices available.</p>';
+                        }
+                        ?>
+                    </div>
                 </div>
                 
                 <!-- Homework Section -->
@@ -189,9 +176,8 @@ include("../includes/dbconnection.php");
                         <h2 class="text-xl font-bold text-highlight-yellow">Homework</h2>
                         <a href="./homework.php" class="text-somaiya-red hover:underline text-sm transition-colors duration-200">View All</a>
                     </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Dynamic Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Dynamic Homework -->
                         <?php
                         $uid = $_SESSION['sturecmsuid'];
 
@@ -274,24 +260,5 @@ include("../includes/dbconnection.php");
             }
         });
     </script>
-    <script src="../src/assets/cursor.js"></script>
-    <!--GSAP Animations-->
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', () => {
-        gsap.utils.toArray(".card").forEach((card, i) => {
-            gsap.fromTo(card, {
-            opacity: 0,
-            y: 30
-            }, {
-            opacity: 1,
-            y: 0,
-            delay: i * 0.05,  // small delay instead of stagger
-            duration: 0.4,
-            ease: "power2.out"
-            });
-         });
-        });
-      </script> -->
-      
 </body>
 </html>
