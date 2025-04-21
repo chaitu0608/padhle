@@ -31,7 +31,6 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 }
 ?>
 
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -39,8 +38,14 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Styles -->
+    <link href="../src/assets/styles.css" rel="stylesheet">
   </head>
   <body class="h-screen m-0 p-0 overflow-hidden">
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
     <!-- Vanta Background Container -->
     <div id="vanta-bg" class="h-full w-full flex items-center justify-center">
       <!-- Login Card -->
@@ -146,5 +151,8 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         backgroundColor: 0x000000
       });
     </script>
+
+    <!-- Custom Cursor Script -->
+    <script src="../src/assets/script.js"></script>
   </body>
 </html>

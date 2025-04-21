@@ -118,7 +118,7 @@ include('../includes/dbconnection.php'); // You’ll create this file in the nex
           <p class="mt-2 text-gray-300">
             Manage students, schedules, and more.
           </p>
-          <a href="./admin/login.php"><button type="button" class="magic-btn">Login as Admin</button></a>
+          <button type="button" class="magic-btn">Login as Admin</button>
         </div>
       </div>
       <div class="myFooter px-10 pt-20">
