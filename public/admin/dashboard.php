@@ -97,7 +97,7 @@ if (!isset($_SESSION['sturecmsaid'])) {
                     <i class="fas fa-book w-5 h-5"></i>
                     <span class="ml-3">Homework</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                <a href="./manage-notice.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-bell w-5 h-5"></i>
                     <span class="ml-3">Notice</span>
                 </a>
