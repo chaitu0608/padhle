@@ -2,24 +2,14 @@
 session_start();
 include('../../includes/dbconnection.php');
 
-$sql = "SELECT * FROM tblclass ORDER BY ID ASC";
-$query = $dbh->prepare($sql);
-$query->execute();
-$classes = $query->fetchAll(PDO::FETCH_OBJ);
-
-if (!isset($_SESSION['sturecmsaid'])) {
-    header('location:login.php');
-    exit();
-}
-
+// Delete logic
 if (isset($_GET['delid'])) {
-    $rid = intval($_GET['delid']);
-    $sql = "DELETE FROM tblclass WHERE ID=:rid";
+    $id = intval($_GET['delid']);
+    $sql = "DELETE FROM tblstudent WHERE ID=:id";
     $query = $dbh->prepare($sql);
-    $query->bindParam(':rid', $rid, PDO::PARAM_STR);
+    $query->bindParam(':id', $id);
     $query->execute();
-    echo "<script>alert('Class deleted successfully');</script>";
-    echo "<script>window.location.href = 'manage-class.php'</script>";
+    echo "<script>alert('Student deleted successfully'); window.location.href='manage-students.php';</script>";
 }
 ?>
 
@@ -28,7 +18,7 @@ if (isset($_GET['delid'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Padhle - Manage Class</title>
+    <title>Padhle - Manage Students</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
@@ -67,6 +57,7 @@ if (isset($_GET['delid'])) {
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: #1e1e1e;
@@ -93,15 +84,15 @@ if (isset($_GET['delid'])) {
             </div>
             
             <!-- Navigation Links -->
-            <nav class="mt-6 px-4">
+            <nav class="mt-6 px-4 overflow-y-auto" style="max-height: calc(100vh - 140px);">
                 <a href="./dashboard.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-tachometer-alt w-5 h-5"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
                 
-                <!-- Class Dropdown (Active) -->
+                <!-- Class Dropdown -->
                 <div class="mb-2">
-                    <button id="class-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                    <button id="class-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <div class="flex items-center">
                             <i class="fas fa-folder w-5 h-5"></i>
                             <span class="ml-3">Class</span>
@@ -109,22 +100,40 @@ if (isset($_GET['delid'])) {
                         <i id="class-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                     </button>
                     
-                    <div id="class-dropdown" class="pl-4 mt-1">
+                    <div id="class-dropdown" class="pl-4 mt-1 hidden">
                         <a href="./add-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                             <i class="fas fa-plus w-5 h-5"></i>
                             <span class="ml-3">Add Class</span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-2 mb-1 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                        <a href="./manage-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                             <i class="fas fa-table w-5 h-5"></i>
                             <span class="ml-3">Manage Class</span>
                         </a>
                     </div>
                 </div>
                 
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-user-graduate w-5 h-5"></i>
-                    <span class="ml-3">Students</span>
-                </a>
+                <!-- Students Dropdown (Active) -->
+                <div class="mb-2">
+                    <button id="students-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                        <div class="flex items-center">
+                            <i class="fas fa-user-graduate w-5 h-5"></i>
+                            <span class="ml-3">Students</span>
+                        </div>
+                        <i id="students-dropdown-icon" class="fas fa-chevron-down rotate-180 transition-transform duration-200"></i>
+                    </button>
+                    
+                    <div id="students-dropdown" class="pl-4 mt-1">
+                        <a href="./add-students.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                            <i class="fas fa-user-plus w-5 h-5"></i>
+                            <span class="ml-3">Add Student</span>
+                        </a>
+                        <a href="./manage-students.php" class="flex items-center px-4 py-2 mb-1 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                            <i class="fas fa-users w-5 h-5"></i>
+                            <span class="ml-3">Manage Students</span>
+                        </a>
+                    </div>
+                </div>
+                
                 <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-book w-5 h-5"></i>
                     <span class="ml-3">Homework</span>
@@ -133,6 +142,7 @@ if (isset($_GET['delid'])) {
                     <i class="fas fa-bell w-5 h-5"></i>
                     <span class="ml-3">Notice</span>
                 </a>
+                
             </nav>
             
             <!-- Logout at bottom -->
@@ -155,53 +165,68 @@ if (isset($_GET['delid'])) {
         <main class="flex-1 overflow-y-auto md:ml-64 transition-all duration-300 ease-in-out">
             <!-- Top bar with admin info -->
             <div class="bg-dark-lighter border-b border-dark-border p-4 flex justify-between items-center sticky top-0 z-20">
-                <h1 class="text-xl font-semibold text-highlight-yellow">Manage Class</h1>
+                <h1 class="text-xl font-semibold text-highlight-yellow">Manage Students</h1>
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-400">Admin | admin@gmail.com</span>
+                    <div class="text-sm text-gray-400">
+                        <a href="#" class="hover:text-white transition-colors duration-200">Dashboard</a>
+                        <span class="mx-2">/</span>
+                        <span class="text-white">Manage Students</span>
+                    </div>
                     <div class="w-8 h-8 bg-somaiya-red rounded-full flex items-center justify-center text-white font-medium">
                         A
                     </div>
                 </div>
             </div>
             
-            <!-- Class Management Content -->
+            <!-- Manage Students Content -->
             <div class="p-6 animate-fade-in">
                 <!-- Header Section -->
-                <div class="mb-6">
-                    <h2 class="text-2xl font-bold mb-2">Class Management</h2>
-                    <p class="text-gray-400">View and manage all classes in the system.</p>
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">Student Management</h2>
+                        <p class="text-gray-400">View and manage all students in the system.</p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <a href="#" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-eye mr-2"></i>
+                            <span>View All Students</span>
+                        </a>
+                    </div>
                 </div>
                 
                 <!-- Filter/Search Section -->
                 <div class="mb-6 flex flex-col sm:flex-row gap-4">
                     <div class="relative flex-1">
-                        <input type="text" placeholder="Search classes..." class="w-full bg-dark-lighter border border-dark-border rounded-md py-2 px-4 pl-10 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
+                        <input type="text" placeholder="Search students..." class="w-full bg-dark-lighter border border-dark-border rounded-md py-2 px-4 pl-10 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
                         <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                     </div>
                     <div class="flex gap-4">
                         <select class="bg-dark-lighter border border-dark-border rounded-md py-2 px-4 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
-                            <option value="all">All Sections</option>
-                            <option value="A">Section A</option>
-                            <option value="B">Section B</option>
-                            <option value="C">Section C</option>
+                            <option value="all">All Classes</option>
+                            <option value="1A">Class 1A</option>
+                            <option value="1B">Class 1B</option>
+                            <option value="2A">Class 2A</option>
+                            <option value="2B">Class 2B</option>
                         </select>
-                        <button class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
+                        <a href="#" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
                             <i class="fas fa-plus mr-2"></i>
-                            <span>Add New Class</span>
-                        </button>
+                            <span>Add Student</span>
+                        </a>
                     </div>
                 </div>
                 
-                <!-- Class Table -->
+                <!-- Students Table -->
                 <div class="overflow-x-auto">
                     <div class="border border-dark-border rounded-lg overflow-hidden">
                         <!-- Table Header -->
                         <div class="bg-dark-lighter text-gray-300 text-sm font-medium">
                             <div class="grid grid-cols-12 gap-4 px-6 py-3">
                                 <div class="col-span-1">S.No</div>
-                                <div class="col-span-4">Class Name</div>
-                                <div class="col-span-2">Section</div>
-                                <div class="col-span-3">Creation Date</div>
+                                <div class="col-span-1">Student ID</div>
+                                <div class="col-span-1">Class</div>
+                                <div class="col-span-3">Student Name</div>
+                                <div class="col-span-3">Email</div>
+                                <div class="col-span-1">Admission Date</div>
                                 <div class="col-span-2 text-right">Action</div>
                             </div>
                         </div>
@@ -209,35 +234,33 @@ if (isset($_GET['delid'])) {
                         <!-- Table Body -->
                         <div class="divide-y divide-dark-border">
                         <?php
-                        $sql = "SELECT * FROM tblclass ORDER BY ID DESC";
-                        $query = $dbh->prepare($sql);
-                        $query->execute();
-                        $results = $query->fetchAll(PDO::FETCH_OBJ);
-                        $cnt = 1;
+                            $sql = "SELECT * FROM tblstudent ORDER BY ID DESC";
+                            $query = $dbh->prepare($sql);
+                            $query->execute();
+                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+                            $cnt = 1;
 
-                        foreach ($results as $row) {
-                            echo '
-                            <div class="grid grid-cols-12 gap-4 items-center border-t border-dark-border px-6 py-4 hover:bg-dark">
-                                <div class="col-span-1 text-sm text-white font-medium">' . str_pad($cnt, 2, "0", STR_PAD_LEFT) . '</div>
-                                <div class="col-span-4 text-sm text-white font-semibold">' . htmlentities($row->ClassName) . '</div>
-                                <div class="col-span-2 text-sm text-gray-300">' . htmlentities($row->Section) . '</div>
-                                <div class="col-span-3 text-sm text-gray-400">' . date('d M Y', strtotime($row->CreationDate)) . '</div>
-                                <div class="col-span-2 flex space-x-2">
-                                    <a href="edit-class-detail.php?editid=' . $row->ID . '">
-                                        <button class="bg-purple-600 text-white px-2 py-1 rounded hover:bg-purple-700 transition">
+                            foreach ($results as $row) {
+                                echo '
+                                <div class="grid grid-cols-12 gap-4 items-center border-t border-dark-border px-6 py-4 hover:bg-dark">
+                                    <div class="col-span-1 text-sm text-gray-300 font-medium text-center">' . str_pad($cnt, 2, "0", STR_PAD_LEFT) . '</div>
+                                    <div class="col-span-2 text-sm text-white font-semibold text-center">' . htmlentities($row->StuID) . '</div>
+                                    <div class="col-span-2 text-sm text-gray-300 text-center">' . htmlentities($row->StudentClass) . ' ' . htmlentities($row->Section) . '</div>
+                                    <div class="col-span-2 text-sm text-white font-semibold text-center">' . htmlentities($row->StudentName) . '</div>
+                                    <div class="col-span-2 text-sm text-gray-300 text-center">' . htmlentities($row->StudentEmail) . '</div>
+                                    <div class="col-span-2 text-sm text-gray-400 text-center">' . date('d M Y', strtotime($row->DateofAdmission)) . '</div>
+                                    <div class="col-span-1 flex justify-center space-x-2">
+                                        <a href="edit-student-detail.php?editid=' . $row->ID . '" class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded transition">
                                             <i class="fas fa-edit"></i>
-                                        </button>
-                                    </a>
-                                    <a href="manage-class.php?delid=' . $row->ID . '" onclick="return confirm(\'Do you really want to delete this class?\');">
-                                        <button class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700 transition">
+                                        </a>
+                                        <a href="manage-students.php?delid=' . $row->ID . '" onclick="return confirm(\'Are you sure you want to delete this student?\');" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded transition">
                                             <i class="fas fa-trash"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>';
-                            $cnt++;
-                        }
-                        ?>
+                                        </a>
+                                    </div>
+                                </div>';
+                                $cnt++;
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -245,7 +268,7 @@ if (isset($_GET['delid'])) {
                 <!-- Pagination -->
                 <div class="mt-6 flex justify-between items-center">
                     <div class="text-sm text-gray-400">
-                        Showing <span class="font-medium text-white">1</span> to <span class="font-medium text-white">8</span> of <span class="font-medium text-white">12</span> entries
+                        Showing <span class="font-medium text-white">1</span> to <span class="font-medium text-white">8</span> of <span class="font-medium text-white">24</span> entries
                     </div>
                     <div class="flex items-center space-x-2">
                         <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
@@ -253,6 +276,7 @@ if (isset($_GET['delid'])) {
                         </button>
                         <button class="w-8 h-8 flex items-center justify-center rounded bg-somaiya-red text-white">1</button>
                         <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">2</button>
+                        <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">3</button>
                         <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
                             <i class="fas fa-chevron-right text-xs"></i>
                         </button>
@@ -293,6 +317,16 @@ if (isset($_GET['delid'])) {
         classDropdownBtn.addEventListener('click', () => {
             classDropdown.classList.toggle('hidden');
             classDropdownIcon.classList.toggle('rotate-180');
+        });
+        
+        // Students dropdown toggle (already open by default)
+        const studentsDropdownBtn = document.getElementById('students-dropdown-btn');
+        const studentsDropdown = document.getElementById('students-dropdown');
+        const studentsDropdownIcon = document.getElementById('students-dropdown-icon');
+        
+        studentsDropdownBtn.addEventListener('click', () => {
+            studentsDropdown.classList.toggle('hidden');
+            studentsDropdownIcon.classList.toggle('rotate-180');
         });
         
         // Close sidebar when clicking outside on mobile

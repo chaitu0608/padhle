@@ -81,7 +81,7 @@ if (!isset($_SESSION['sturecmsaid'])) {
             
             <!-- Navigation Links -->
             <nav class="mt-6 px-4">
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white bg-red-800 rounded-md transition-colors duration-200 hover:bg-red-900">
+                <a href="./dashboard.php" class="flex items-center px-4 py-3 mb-2 text-white bg-red-800 rounded-md transition-colors duration-200 hover:bg-red-900">
                     <i class="fas fa-tachometer-alt w-5 h-5"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
@@ -89,7 +89,7 @@ if (!isset($_SESSION['sturecmsaid'])) {
                     <i class="fas fa-chalkboard w-5 h-5"></i>
                     <span class="ml-3">Class</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                <a href="./manage-students.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-user-graduate w-5 h-5"></i>
                     <span class="ml-3">Students</span>
                 </a>
@@ -100,22 +100,6 @@ if (!isset($_SESSION['sturecmsaid'])) {
                 <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-bell w-5 h-5"></i>
                     <span class="ml-3">Notice</span>
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-bullhorn w-5 h-5"></i>
-                    <span class="ml-3">Public Notice</span>
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-file-alt w-5 h-5"></i>
-                    <span class="ml-3">Pages</span>
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-chart-bar w-5 h-5"></i>
-                    <span class="ml-3">Reports</span>
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-search w-5 h-5"></i>
-                    <span class="ml-3">Search</span>
                 </a>
             </nav>
             
