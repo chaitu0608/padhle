@@ -11,6 +11,60 @@ if (isset($_GET['delid'])) {
     $query->execute();
     echo "<script>alert('Student deleted successfully'); window.location.href='manage-students.php';</script>";
 }
+
+// Pagination variables
+$entriesPerPage = 8; // Number of students per page
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1; // Current page
+$offset = ($page - 1) * $entriesPerPage; // Offset for SQL query
+
+// Search and filter variables
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$classFilter = isset($_GET['class']) ? trim($_GET['class']) : 'all';
+
+// Base SQL query
+$sql = "SELECT * FROM tblstudent WHERE 1=1";
+
+// Add class filter
+if ($classFilter !== 'all') {
+    $sql .= " AND StudentClass = :classFilter";
+}
+
+// Add search functionality
+if (!empty($search)) {
+    $sql .= " AND (StudentName LIKE :search OR StudentEmail LIKE :search OR StuID LIKE :search)";
+}
+
+// Add pagination
+$sql .= " ORDER BY ID DESC LIMIT :offset, :entriesPerPage";
+
+$query = $dbh->prepare($sql);
+
+// Bind parameters
+if ($classFilter !== 'all') {
+    $query->bindParam(':classFilter', $classFilter, PDO::PARAM_STR);
+}
+if (!empty($search)) {
+    $searchParam = '%' . $search . '%';
+    $query->bindParam(':search', $searchParam, PDO::PARAM_STR);
+}
+$query->bindParam(':offset', $offset, PDO::PARAM_INT);
+$query->bindParam(':entriesPerPage', $entriesPerPage, PDO::PARAM_INT);
+$query->execute();
+$results = $query->fetchAll(PDO::FETCH_OBJ);
+
+// Count total entries for pagination
+$totalEntriesQuery = $dbh->prepare("SELECT COUNT(*) FROM tblstudent WHERE 1=1" . 
+    ($classFilter !== 'all' ? " AND StudentClass = :classFilter" : "") . 
+    (!empty($search) ? " AND (StudentName LIKE :search OR StudentEmail LIKE :search OR StuID LIKE :search)" : ""));
+if ($classFilter !== 'all') {
+    $totalEntriesQuery->bindParam(':classFilter', $classFilter, PDO::PARAM_STR);
+}
+if (!empty($search)) {
+    $totalEntriesQuery->bindParam(':search', $searchParam, PDO::PARAM_STR);
+}
+$totalEntriesQuery->execute();
+$totalEntries = $totalEntriesQuery->fetchColumn();
+$totalPages = ceil($totalEntries / $entriesPerPage);
 ?>
 
 <!DOCTYPE html>
@@ -218,7 +272,7 @@ if (isset($_GET['delid'])) {
                         <p class="text-gray-400">View and manage all students in the system.</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <a href="#" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
+                        <a href="manage-students.php" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
                             <i class="fas fa-eye mr-2"></i>
                             <span>View All Students</span>
                         </a>
@@ -227,23 +281,41 @@ if (isset($_GET['delid'])) {
                 
                 <!-- Filter/Search Section -->
                 <div class="mb-6 flex flex-col sm:flex-row gap-4">
-                    <div class="relative flex-1">
-                        <input type="text" placeholder="Search students..." class="w-full bg-dark-lighter border border-dark-border rounded-md py-2 px-4 pl-10 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    </div>
-                    <div class="flex gap-4">
-                        <select class="bg-dark-lighter border border-dark-border rounded-md py-2 px-4 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
-                            <option value="all">All Classes</option>
-                            <option value="1A">Class 1A</option>
-                            <option value="1B">Class 1B</option>
-                            <option value="2A">Class 2A</option>
-                            <option value="2B">Class 2B</option>
-                        </select>
-                        <a href="#" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
+                    <form method="get" class="flex flex-1 gap-4">
+                        <!-- Search Input -->
+                        <div class="relative flex-1">
+                            <input type="text" name="search" placeholder="Search students..." value="<?php echo htmlentities($search); ?>"
+                                   class="w-full bg-dark-lighter border border-dark-border rounded-md py-2 px-4 pl-10 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        <!-- Class Filter -->
+                        <div>
+                            <select name="class" class="bg-dark-lighter border border-dark-border rounded-md py-2 px-4 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
+                                <option value="all" <?php echo $classFilter === 'all' ? 'selected' : ''; ?>>All Classes</option>
+                                <?php
+                                // Fetch distinct classes from the database
+                                $classQuery = $dbh->query("SELECT DISTINCT StudentClass FROM tblstudent ORDER BY StudentClass ASC");
+                                $classes = $classQuery->fetchAll(PDO::FETCH_OBJ);
+                                foreach ($classes as $class) {
+                                    $selected = ($classFilter === $class->StudentClass) ? 'selected' : '';
+                                    echo '<option value="' . htmlentities($class->StudentClass) . '" ' . $selected . '>' . htmlentities($class->StudentClass) . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <!-- Filter Button -->
+                        <button type="submit" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-filter mr-2"></i>
+                            <span>Filter</span>
+                        </button>
+                    </form>
+                    <!-- Add Student Button -->
+                    <a href="add-students.php">
+                        <button class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
                             <i class="fas fa-plus mr-2"></i>
                             <span>Add Student</span>
-                        </a>
-                    </div>
+                        </button>
+                    </a>
                 </div>
                 
                 <!-- Students Table -->
@@ -252,34 +324,30 @@ if (isset($_GET['delid'])) {
                         <!-- Table Header -->
                         <div class="bg-dark-lighter text-gray-300 text-sm font-medium">
                             <div class="grid grid-cols-12 gap-4 px-6 py-3">
-                                <div class="col-span-1">S.No</div>
-                                <div class="col-span-1">Student ID</div>
-                                <div class="col-span-1">Class</div>
-                                <div class="col-span-3">Student Name</div>
-                                <div class="col-span-3">Email</div>
-                                <div class="col-span-1">Admission Date</div>
-                                <div class="col-span-2 text-right">Action</div>
+                                <div class="col-span-1 text-center">S.No</div>
+                                <div class="col-span-2 text-center">Student ID</div>
+                                <div class="col-span-2 text-center">Class</div>
+                                <div class="col-span-3 text-center">Student Name</div>
+                                <div class="col-span-2 text-center">Email</div>
+                                <div class="col-span-1 text-center">Admission Date</div>
+                                <div class="col-span-1 text-center">Action</div>
                             </div>
                         </div>
-                        
+
                         <!-- Table Body -->
                         <div class="divide-y divide-dark-border">
-                        <?php
-                            $sql = "SELECT * FROM tblstudent ORDER BY ID DESC";
-                            $query = $dbh->prepare($sql);
-                            $query->execute();
-                            $results = $query->fetchAll(PDO::FETCH_OBJ);
-                            $cnt = 1;
+                            <?php
+                            $cnt = $offset + 1;
 
                             foreach ($results as $row) {
                                 echo '
                                 <div class="grid grid-cols-12 gap-4 items-center border-t border-dark-border px-6 py-4 hover:bg-dark">
                                     <div class="col-span-1 text-sm text-gray-300 font-medium text-center">' . str_pad($cnt, 2, "0", STR_PAD_LEFT) . '</div>
                                     <div class="col-span-2 text-sm text-white font-semibold text-center">' . htmlentities($row->StuID) . '</div>
-                                    <div class="col-span-2 text-sm text-gray-300 text-center">' . htmlentities($row->StudentClass) . ' ' . htmlentities($row->Section) . '</div>
-                                    <div class="col-span-2 text-sm text-white font-semibold text-center">' . htmlentities($row->StudentName) . '</div>
+                                    <div class="col-span-2 text-sm text-gray-300 text-center">' . htmlentities($row->StudentClass) . '</div>
+                                    <div class="col-span-3 text-sm text-white font-semibold text-center">' . htmlentities($row->StudentName) . '</div>
                                     <div class="col-span-2 text-sm text-gray-300 text-center">' . htmlentities($row->StudentEmail) . '</div>
-                                    <div class="col-span-2 text-sm text-gray-400 text-center">' . date('d M Y', strtotime($row->DateofAdmission)) . '</div>
+                                    <div class="col-span-1 text-sm text-gray-400 text-center">' . date('d M Y', strtotime($row->DateofAdmission)) . '</div>
                                     <div class="col-span-1 flex justify-center space-x-2">
                                         <a href="edit-student-detail.php?editid=' . $row->ID . '" class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded transition">
                                             <i class="fas fa-edit"></i>
@@ -299,18 +367,33 @@ if (isset($_GET['delid'])) {
                 <!-- Pagination -->
                 <div class="mt-6 flex justify-between items-center">
                     <div class="text-sm text-gray-400">
-                        Showing <span class="font-medium text-white">1</span> to <span class="font-medium text-white">8</span> of <span class="font-medium text-white">24</span> entries
+                        Showing 
+                        <span class="font-medium text-white"><?php echo $offset + 1; ?></span> to 
+                        <span class="font-medium text-white"><?php echo min($offset + $entriesPerPage, $totalEntries); ?></span> of 
+                        <span class="font-medium text-white"><?php echo $totalEntries; ?></span> entries
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
-                            <i class="fas fa-chevron-left text-xs"></i>
-                        </button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded bg-somaiya-red text-white">1</button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">2</button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">3</button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
-                            <i class="fas fa-chevron-right text-xs"></i>
-                        </button>
+                        <?php if ($page > 1): ?>
+                            <a href="?page=<?php echo $page - 1; ?>">
+                                <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
+                                    <i class="fas fa-chevron-left text-xs"></i>
+                                </button>
+                            </a>
+                        <?php endif; ?>
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <a href="?page=<?php echo $i; ?>">
+                                <button class="w-8 h-8 flex items-center justify-center rounded <?php echo $i == $page ? 'bg-somaiya-red text-white' : 'border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red'; ?> transition-colors duration-200">
+                                    <?php echo $i; ?>
+                                </button>
+                            </a>
+                        <?php endfor; ?>
+                        <?php if ($page < $totalPages): ?>
+                            <a href="?page=<?php echo $page + 1; ?>">
+                                <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
+                                    <i class="fas fa-chevron-right text-xs"></i>
+                                </button>
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 
