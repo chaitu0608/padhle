@@ -114,7 +114,7 @@ $row = $query->fetch(PDO::FETCH_OBJ);
             
             <!-- Logout at bottom -->
             <div class="absolute bottom-0 w-full p-4 border-t border-dark-border">
-                <a href="#" class="flex items-center px-4 py-3 text-gray-400 rounded-md transition-colors duration-200 hover:bg-dark-border hover:text-white">
+                <a href="logout.php" class="flex items-center px-4 py-3 text-gray-400 rounded-md transition-colors duration-200 hover:bg-dark-border hover:text-white">
                     <i class="fas fa-sign-out-alt w-5 h-5"></i>
                     <span class="ml-3">Logout</span>
                 </a>
