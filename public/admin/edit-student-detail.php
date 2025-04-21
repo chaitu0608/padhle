@@ -2,70 +2,85 @@
 session_start();
 include('../../includes/dbconnection.php');
 
+// Fetch student details if `editid` is set
 if (isset($_GET['editid'])) {
     $id = intval($_GET['editid']);
     $sql = "SELECT * FROM tblstudent WHERE ID=:id";
     $query = $dbh->prepare($sql);
-    $query->bindParam(':id', $id);
+    $query->bindParam(':id', $id, PDO::PARAM_INT);
     $query->execute();
     $result = $query->fetch(PDO::FETCH_OBJ);
-}
 
-// Update logic
-if (isset($_POST['update'])) {
-    $studentname = $_POST['studentname'];
-    $studentemail = $_POST['studentemail'];
-    $studentclass = $_POST['studentclass'];
-    $gender = $_POST['gender'];
-    $dob = $_POST['dob'];
-    $fathersname = $_POST['fathersname'];
-    $mothersname = $_POST['mothersname'];
-    $contactnumber = $_POST['contactnumber'];
-    $alternatenumber = $_POST['alternatenumber'];
-    $address = $_POST['address'];
-
-    $sql = "UPDATE tblstudent SET StudentName=:studentname, StudentEmail=:studentemail, Class=:studentclass, Gender=:gender, DOB=:dob, FatherName=:fathersname, MotherName=:mothersname, ContactNumber=:contactnumber, AlternateNumber=:alternatenumber, Address=:address WHERE ID=:id";
-    $query = $dbh->prepare($sql);
-
-    $query->bindParam(':studentname', $studentname);
-    $query->bindParam(':studentemail', $studentemail);
-    $query->bindParam(':studentclass', $studentclass);
-    $query->bindParam(':gender', $gender);
-    $query->bindParam(':dob', $dob);
-    $query->bindParam(':fathersname', $fathersname);
-    $query->bindParam(':mothersname', $mothersname);
-    $query->bindParam(':contactnumber', $contactnumber);
-    $query->bindParam(':alternatenumber', $alternatenumber);
-    $query->bindParam(':address', $address);
-    $query->bindParam(':id', $id);
-
-    if ($query->execute()) {
-        echo "<script>alert('Student details updated'); window.location.href='manage-students.php';</script>";
+    if (!$result) {
+        echo "<script>alert('Student not found!'); window.location.href='manage-students.php';</script>";
+        exit;
     }
 }
 
-if (isset($_GET['editid'])) {
-    $eid = intval($_GET['editid']);
-    $sql = "SELECT * FROM tblstudent WHERE ID = :eid";
-    $query = $dbh->prepare($sql);
-    $query->bindParam(':eid', $eid, PDO::PARAM_INT);
-    $query->execute();
-    $result = $query->fetch(PDO::FETCH_OBJ);
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
+    try {
+        // Fetch updated student details from the form
+        $studentname = $_POST['studentName'];
+        $studentemail = $_POST['studentEmail'];
+        $studentclass = $_POST['studentClass'];
+        $gender = $_POST['gender'];
+        $dob = $_POST['dob'];
+        $fathersname = $_POST['fatherName'];
+        $mothersname = $_POST['motherName'];
+        $contactnumber = $_POST['contactNumber'];
+        $alternatenumber = $_POST['alternateContactNumber'];
+        $address = $_POST['address'];
 
-    if ($query->rowCount() > 0) {
-        // Assign fetched values to variables
-        $name = htmlentities($result->StudentName);
-        $email = htmlentities($result->StudentEmail);
-        $class = htmlentities($result->StudentClass);
-        $section = htmlentities($result->Section);
-        $gender = htmlentities($result->Gender);
-        $dob = htmlentities($result->DOB);
-        $father = htmlentities($result->FatherName);
-        $mother = htmlentities($result->MotherName);
-        $contact = htmlentities($result->ContactNumber);
-        $altcontact = htmlentities($result->AlternateNumber);
-        $address = htmlentities($result->Address);
-        $stuid = htmlentities($result->StuID);
+        // Handle photo upload
+        $photo = $result->StudentPhoto; // Keep the current photo by default
+        if (!empty($_FILES['studentImage']['name'])) {
+            $photo = time() . '_' . $_FILES['studentImage']['name'];
+            $uploadPath = "../../uploads/students/" . $photo;
+            if (!move_uploaded_file($_FILES['studentImage']['tmp_name'], $uploadPath)) {
+                throw new Exception("Failed to upload photo.");
+            }
+        }
+
+        // Update query
+        $sql = "UPDATE tblstudent SET 
+                    StudentName=:studentname, 
+                    StudentEmail=:studentemail, 
+                    StudentClass=:studentclass, 
+                    Gender=:gender, 
+                    DOB=:dob, 
+                    FatherName=:fathersname, 
+                    MotherName=:mothersname, 
+                    ContactNumber=:contactnumber, 
+                    AlternateNumber=:alternatenumber, 
+                    Address=:address, 
+                    StudentPhoto=:photo 
+                WHERE ID=:id";
+        $query = $dbh->prepare($sql);
+
+        // Bind parameters
+        $query->bindParam(':studentname', $studentname);
+        $query->bindParam(':studentemail', $studentemail);
+        $query->bindParam(':studentclass', $studentclass);
+        $query->bindParam(':gender', $gender);
+        $query->bindParam(':dob', $dob);
+        $query->bindParam(':fathersname', $fathersname);
+        $query->bindParam(':mothersname', $mothersname);
+        $query->bindParam(':contactnumber', $contactnumber);
+        $query->bindParam(':alternatenumber', $alternatenumber);
+        $query->bindParam(':address', $address);
+        $query->bindParam(':photo', $photo);
+        $query->bindParam(':id', $id);
+
+        // Execute query
+        if ($query->execute()) {
+            echo "<script>alert('Student details updated successfully!'); window.location.href='manage-students.php';</script>";
+            exit;
+        } else {
+            throw new Exception("Failed to update student details.");
+        }
+    } catch (Exception $e) {
+        echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
     }
 }
 ?>
@@ -163,7 +178,7 @@ if (isset($_GET['editid'])) {
             
             <!-- Navigation Links -->
             <nav class="mt-6 px-4 overflow-y-auto" style="max-height: calc(100vh - 140px);">
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                <a href="dashboard.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-tachometer-alt w-5 h-5"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
@@ -179,11 +194,11 @@ if (isset($_GET['editid'])) {
                     </button>
                     
                     <div id="class-dropdown" class="pl-4 mt-1 hidden">
-                        <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <a href="add-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                             <i class="fas fa-plus w-5 h-5"></i>
                             <span class="ml-3">Add Class</span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <a href="manage-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                             <i class="fas fa-table w-5 h-5"></i>
                             <span class="ml-3">Manage Class</span>
                         </a>
@@ -201,50 +216,34 @@ if (isset($_GET['editid'])) {
                     </button>
                     
                     <div id="students-dropdown" class="pl-4 mt-1">
-                        <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <a href="add-students.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                             <i class="fas fa-user-plus w-5 h-5"></i>
                             <span class="ml-3">Add Student</span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <a href="manage-students.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                             <i class="fas fa-users w-5 h-5"></i>
                             <span class="ml-3">Manage Students</span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-2 mb-1 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                        <a href="edit-student-detail.php" class="flex items-center px-4 py-2 mb-1 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
                             <i class="fas fa-user-edit w-5 h-5"></i>
                             <span class="ml-3">Edit Student</span>
                         </a>
                     </div>
                 </div>
                 
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                <a href="manage-homework.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-book w-5 h-5"></i>
                     <span class="ml-3">Homework</span>
                 </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                <a href="manage-notice.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-bell w-5 h-5"></i>
                     <span class="ml-3">Notice</span>
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-bullhorn w-5 h-5"></i>
-                    <span class="ml-3">Public Notice</span>
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-file-alt w-5 h-5"></i>
-                    <span class="ml-3">Pages</span>
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-chart-bar w-5 h-5"></i>
-                    <span class="ml-3">Reports</span>
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-search w-5 h-5"></i>
-                    <span class="ml-3">Search</span>
                 </a>
             </nav>
             
             <!-- Logout at bottom -->
             <div class="absolute bottom-0 w-full p-4 border-t border-red-800">
-                <a href="#" class="flex items-center px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                <a href="" class="flex items-center px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-sign-out-alt w-5 h-5"></i>
                     <span class="ml-3">Logout</span>
                 </a>
@@ -365,10 +364,15 @@ if (isset($_GET['editid'])) {
                                     Student Photo
                                 </label>
                                 <div class="flex items-center space-x-4">
+                                    <!-- Display Current Photo -->
                                     <div class="w-16 h-16 bg-dark-border rounded-md overflow-hidden flex items-center justify-center">
-                                        <i class="fas fa-user text-2xl text-gray-400"></i>
-                                        <!-- This would be replaced with an actual image in a real implementation -->
+                                        <?php if (!empty($result->StudentPhoto)): ?>
+                                            <img src="../../uploads/students/<?php echo htmlentities($result->StudentPhoto); ?>" alt="Student Photo" class="w-full h-full object-cover">
+                                        <?php else: ?>
+                                            <i class="fas fa-user text-2xl text-gray-400"></i>
+                                        <?php endif; ?>
                                     </div>
+                                    <!-- File Input for New Photo -->
                                     <input type="file" id="studentImage" name="studentImage" accept="image/*" class="custom-file-input bg-dark border border-dark-border rounded-md py-2 px-4 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
                                 </div>
                                 <p class="text-xs text-gray-400 mt-1">Upload a new photo if you want to change the current one (Max: 2MB)</p>
@@ -453,7 +457,7 @@ if (isset($_GET['editid'])) {
                             <span>Update Student</span>
                         </button>
                         <div class="mt-4 text-center">
-                            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <a href="manage-students.php" class="text-gray-400 hover:text-white transition-colors duration-200">
                                 <i class="fas fa-arrow-left mr-1"></i> Back to Manage Students
                             </a>
                         </div>
