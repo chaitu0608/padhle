@@ -84,7 +84,7 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
 </head>
 <body class="bg-dark text-white font-sans">
 <div class="flex h-screen overflow-hidden">
-    <!-- Sidebar -->
+    <!-- Common Sidebar -->
     <aside id="sidebar" class="bg-somaiya-red w-64 h-full flex-shrink-0 fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
         <!-- Logo -->
         <div class="p-4 border-b border-red-800">
@@ -93,14 +93,15 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                 <span class="ml-3 text-xl font-bold text-white">Padhle Admin</span>
             </div>
         </div>
-        
+
         <!-- Navigation Links -->
         <nav class="mt-6 px-4 overflow-y-auto" style="max-height: calc(100vh - 140px);">
+            <!-- Dashboard -->
             <a href="./dashboard.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                 <i class="fas fa-tachometer-alt w-5 h-5"></i>
                 <span class="ml-3">Dashboard</span>
             </a>
-            
+
             <!-- Class Dropdown -->
             <div class="mb-2">
                 <button id="class-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
@@ -110,9 +111,8 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                     </div>
                     <i id="class-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                 </button>
-                
                 <div id="class-dropdown" class="pl-4 mt-1 hidden">
-                    <a href="./ad-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                    <a href="./add-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-plus w-5 h-5"></i>
                         <span class="ml-3">Add Class</span>
                     </a>
@@ -122,7 +122,7 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                     </a>
                 </div>
             </div>
-            
+
             <!-- Students Dropdown -->
             <div class="mb-2">
                 <button id="students-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
@@ -132,7 +132,6 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                     </div>
                     <i id="students-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                 </button>
-                
                 <div id="students-dropdown" class="pl-4 mt-1 hidden">
                     <a href="./add-students.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-user-plus w-5 h-5"></i>
@@ -144,7 +143,7 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                     </a>
                 </div>
             </div>
-            
+
             <!-- Homework Dropdown -->
             <div class="mb-2">
                 <button id="homework-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
@@ -154,7 +153,6 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                     </div>
                     <i id="homework-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                 </button>
-                
                 <div id="homework-dropdown" class="pl-4 mt-1 hidden">
                     <a href="./add-homework.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-plus w-5 h-5"></i>
@@ -166,34 +164,32 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                     </a>
                 </div>
             </div>
-            
-            <!-- Notice (Active) -->
+
+            <!-- Notices Dropdown -->
             <div class="mb-2">
-                <button id="notice-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                <button id="notices-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <div class="flex items-center">
                         <i class="fas fa-bell w-5 h-5"></i>
-                        <span class="ml-3">Notice</span>
+                        <span class="ml-3">Notices</span>
                     </div>
-                    <i id="notice-dropdown-icon" class="fas fa-chevron-down rotate-180 transition-transform duration-200"></i>
+                    <i id="notices-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                 </button>
-                
-                <div id="notice-dropdown" class="pl-4 mt-1">
+                <div id="notices-dropdown" class="pl-4 mt-1 hidden">
                     <a href="./add-notice.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-plus w-5 h-5"></i>
                         <span class="ml-3">Add Notice</span>
                     </a>
-                    <a href="./manage-notice.php" class="flex items-center px-4 py-2 mb-1 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                    <a href="./manage-notice.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-list w-5 h-5"></i>
-                        <span class="ml-3">Manage Notice</span>
+                        <span class="ml-3">Manage Notices</span>
                     </a>
                 </div>
             </div>
-            </a>
         </nav>
-        
+
         <!-- Logout at bottom -->
         <div class="absolute bottom-0 w-full p-4 border-t border-red-800">
-            <a href="#" class="flex items-center px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+            <a href="./logout.php" class="flex items-center px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                 <i class="fas fa-sign-out-alt w-5 h-5"></i>
                 <span class="ml-3">Logout</span>
             </a>
@@ -375,20 +371,18 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
         homeworkDropdownIcon.classList.toggle('rotate-180');
     });
     
-    // Notice dropdown toggle (already open by default)
-    const noticeDropdownBtn = document.getElementById('notice-dropdown-btn');
-    const noticeDropdown = document.getElementById('notice-dropdown');
-    const noticeDropdownIcon = document.getElementById('notice-dropdown-icon');
+    // Notices dropdown toggle
+    const noticesDropdownBtn = document.getElementById('notices-dropdown-btn');
+    const noticesDropdown = document.getElementById('notices-dropdown');
+    const noticesDropdownIcon = document.getElementById('notices-dropdown-icon');
     
-    noticeDropdownBtn.addEventListener('click', () => {
-        noticeDropdown.classList.toggle('hidden');
-        noticeDropdownIcon.classList.toggle('rotate-180');
+    noticesDropdownBtn.addEventListener('click', () => {
+        noticesDropdown.classList.toggle('hidden');
+        noticesDropdownIcon.classList.toggle('rotate-180');
     });
     
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', (e) => {
-        const isMobile = window.innerWidth < 768;
-        const isOutsideSidebar = !sidebar  (e) => {
         const isMobile = window.innerWidth < 768;
         const isOutsideSidebar = !sidebar.contains(e.target) && !sidebarToggle.contains(e.target);
         

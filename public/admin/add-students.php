@@ -138,7 +138,7 @@ if (isset($_POST['submit'])) {
 </head>
 <body class="bg-dark text-white font-sans">
     <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar -->
+        <!-- Common Sidebar -->
         <aside id="sidebar" class="bg-somaiya-red w-64 h-full flex-shrink-0 fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
             <!-- Logo -->
             <div class="p-4 border-b border-red-800">
@@ -147,14 +147,15 @@ if (isset($_POST['submit'])) {
                     <span class="ml-3 text-xl font-bold text-white">Padhle Admin</span>
                 </div>
             </div>
-            
+
             <!-- Navigation Links -->
             <nav class="mt-6 px-4 overflow-y-auto" style="max-height: calc(100vh - 140px);">
+                <!-- Dashboard -->
                 <a href="./dashboard.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-tachometer-alt w-5 h-5"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
-                
+
                 <!-- Class Dropdown -->
                 <div class="mb-2">
                     <button id="class-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
@@ -164,31 +165,29 @@ if (isset($_POST['submit'])) {
                         </div>
                         <i id="class-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                     </button>
-                    
                     <div id="class-dropdown" class="pl-4 mt-1 hidden">
-                        <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <a href="./add-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                             <i class="fas fa-plus w-5 h-5"></i>
                             <span class="ml-3">Add Class</span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <a href="./manage-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                             <i class="fas fa-table w-5 h-5"></i>
                             <span class="ml-3">Manage Class</span>
                         </a>
                     </div>
                 </div>
-                
-                <!-- Students Dropdown (Active) -->
+
+                <!-- Students Dropdown -->
                 <div class="mb-2">
-                    <button id="students-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                    <button id="students-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <div class="flex items-center">
                             <i class="fas fa-user-graduate w-5 h-5"></i>
                             <span class="ml-3">Students</span>
                         </div>
-                        <i id="students-dropdown-icon" class="fas fa-chevron-down rotate-180 transition-transform duration-200"></i>
+                        <i id="students-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                     </button>
-                    
-                    <div id="students-dropdown" class="pl-4 mt-1">
-                        <a href="./add-students.php" class="flex items-center px-4 py-2 mb-1 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                    <div id="students-dropdown" class="pl-4 mt-1 hidden">
+                        <a href="./add-students.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                             <i class="fas fa-user-plus w-5 h-5"></i>
                             <span class="ml-3">Add Student</span>
                         </a>
@@ -198,20 +197,53 @@ if (isset($_POST['submit'])) {
                         </a>
                     </div>
                 </div>
-                
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-book w-5 h-5"></i>
-                    <span class="ml-3">Homework</span>
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                    <i class="fas fa-bell w-5 h-5"></i>
-                    <span class="ml-3">Notice</span>
-                </a>
+
+                <!-- Homework Dropdown -->
+                <div class="mb-2">
+                    <button id="homework-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <div class="flex items-center">
+                            <i class="fas fa-book w-5 h-5"></i>
+                            <span class="ml-3">Homework</span>
+                        </div>
+                        <i id="homework-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
+                    </button>
+                    <div id="homework-dropdown" class="pl-4 mt-1 hidden">
+                        <a href="./add-homework.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                            <i class="fas fa-plus w-5 h-5"></i>
+                            <span class="ml-3">Add Homework</span>
+                        </a>
+                        <a href="./manage-homework.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                            <i class="fas fa-tasks w-5 h-5"></i>
+                            <span class="ml-3">Manage Homework</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Notices Dropdown -->
+                <div class="mb-2">
+                    <button id="notices-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <div class="flex items-center">
+                            <i class="fas fa-bell w-5 h-5"></i>
+                            <span class="ml-3">Notices</span>
+                        </div>
+                        <i id="notices-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
+                    </button>
+                    <div id="notices-dropdown" class="pl-4 mt-1 hidden">
+                        <a href="./add-notice.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                            <i class="fas fa-plus w-5 h-5"></i>
+                            <span class="ml-3">Add Notice</span>
+                        </a>
+                        <a href="./manage-notice.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                            <i class="fas fa-list w-5 h-5"></i>
+                            <span class="ml-3">Manage Notices</span>
+                        </a>
+                    </div>
+                </div>
             </nav>
-            
+
             <!-- Logout at bottom -->
             <div class="absolute bottom-0 w-full p-4 border-t border-red-800">
-                <a href="#" class="flex items-center px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                <a href="./logout.php" class="flex items-center px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <i class="fas fa-sign-out-alt w-5 h-5"></i>
                     <span class="ml-3">Logout</span>
                 </a>
@@ -403,26 +435,6 @@ if (isset($_POST['submit'])) {
             }
         });
         
-        // Class dropdown toggle
-        const classDropdownBtn = document.getElementById('class-dropdown-btn');
-        const classDropdown = document.getElementById('class-dropdown');
-        const classDropdownIcon = document.getElementById('class-dropdown-icon');
-        
-        classDropdownBtn.addEventListener('click', () => {
-            classDropdown.classList.toggle('hidden');
-            classDropdownIcon.classList.toggle('rotate-180');
-        });
-        
-        // Students dropdown toggle (already open by default)
-        const studentsDropdownBtn = document.getElementById('students-dropdown-btn');
-        const studentsDropdown = document.getElementById('students-dropdown');
-        const studentsDropdownIcon = document.getElementById('students-dropdown-icon');
-        
-        studentsDropdownBtn.addEventListener('click', () => {
-            studentsDropdown.classList.toggle('hidden');
-            studentsDropdownIcon.classList.toggle('rotate-180');
-        });
-        
         // Set current date as default for Date of Admission
         document.addEventListener('DOMContentLoaded', function() {
             const today = new Date().toISOString().split('T')[0];
@@ -439,6 +451,29 @@ if (isset($_POST['submit'])) {
                 sidebarIcon.classList.remove('fa-times');
                 sidebarIcon.classList.add('fa-bars');
             }
+        });
+
+        // Dropdown functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Dropdown buttons and containers
+            const dropdowns = [
+                { btn: 'class-dropdown-btn', container: 'class-dropdown', icon: 'class-dropdown-icon' },
+                { btn: 'students-dropdown-btn', container: 'students-dropdown', icon: 'students-dropdown-icon' },
+                { btn: 'homework-dropdown-btn', container: 'homework-dropdown', icon: 'homework-dropdown-icon' },
+                { btn: 'notices-dropdown-btn', container: 'notices-dropdown', icon: 'notices-dropdown-icon' },
+            ];
+
+            // Add event listeners for each dropdown
+            dropdowns.forEach(({ btn, container, icon }) => {
+                const button = document.getElementById(btn);
+                const dropdown = document.getElementById(container);
+                const dropdownIcon = document.getElementById(icon);
+
+                button.addEventListener('click', () => {
+                    dropdown.classList.toggle('hidden');
+                    dropdownIcon.classList.toggle('rotate-180');
+                });
+            });
         });
     </script>
 </body>

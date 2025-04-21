@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../../includes/dbconnection.php');
+include '../../includes/dbconnection.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -24,8 +24,6 @@ $query = $dbh->prepare($sql);
 $query->execute();
 $results = $query->fetchAll(PDO::FETCH_OBJ);
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,6 +61,21 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
             }
         }
     }
+
+    // Dropdown toggle functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        const dropdownButtons = document.querySelectorAll('[id$="-dropdown-btn"]');
+        dropdownButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const dropdownId = button.id.replace('-btn', '');
+                const dropdown = document.getElementById(dropdownId);
+                const icon = button.querySelector('i');
+                dropdown.classList.toggle('hidden');
+                icon.classList.toggle('fa-chevron-down');
+                icon.classList.toggle('fa-chevron-up');
+            });
+        });
+    });
 </script>
 <style>
     /* Import Inter font */
@@ -87,7 +100,7 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
 </head>
 <body class="bg-dark text-white font-sans">
 <div class="flex h-screen overflow-hidden">
-    <!-- Sidebar -->
+    <!-- Common Sidebar -->
     <aside id="sidebar" class="bg-somaiya-red w-64 h-full flex-shrink-0 fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out transform md:translate-x-0 -translate-x-full">
         <!-- Logo -->
         <div class="p-4 border-b border-red-800">
@@ -96,14 +109,15 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                 <span class="ml-3 text-xl font-bold text-white">Padhle Admin</span>
             </div>
         </div>
-        
+
         <!-- Navigation Links -->
         <nav class="mt-6 px-4 overflow-y-auto" style="max-height: calc(100vh - 140px);">
-            <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+            <!-- Dashboard -->
+            <a href="./dashboard.php" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                 <i class="fas fa-tachometer-alt w-5 h-5"></i>
                 <span class="ml-3">Dashboard</span>
             </a>
-            
+
             <!-- Class Dropdown -->
             <div class="mb-2">
                 <button id="class-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
@@ -113,19 +127,18 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                     </div>
                     <i id="class-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                 </button>
-                
                 <div id="class-dropdown" class="pl-4 mt-1 hidden">
-                    <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                    <a href="./add-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-plus w-5 h-5"></i>
                         <span class="ml-3">Add Class</span>
                     </a>
-                    <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                    <a href="./manage-class.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-table w-5 h-5"></i>
                         <span class="ml-3">Manage Class</span>
                     </a>
                 </div>
             </div>
-            
+
             <!-- Students Dropdown -->
             <div class="mb-2">
                 <button id="students-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
@@ -135,51 +148,64 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                     </div>
                     <i id="students-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                 </button>
-                
                 <div id="students-dropdown" class="pl-4 mt-1 hidden">
-                    <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                    <a href="./add-students.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-user-plus w-5 h-5"></i>
                         <span class="ml-3">Add Student</span>
                     </a>
-                    <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                    <a href="./manage-students.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-users w-5 h-5"></i>
                         <span class="ml-3">Manage Students</span>
                     </a>
                 </div>
             </div>
-            
-            <!-- Homework Dropdown (Active) -->
+
+            <!-- Homework Dropdown -->
             <div class="mb-2">
-                <button id="homework-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                <button id="homework-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                     <div class="flex items-center">
                         <i class="fas fa-book w-5 h-5"></i>
                         <span class="ml-3">Homework</span>
                     </div>
-                    <i id="homework-dropdown-icon" class="fas fa-chevron-down rotate-180 transition-transform duration-200"></i>
+                    <i id="homework-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
                 </button>
-                
-                <div id="homework-dropdown" class="pl-4 mt-1">
-                    <a href="#" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                <div id="homework-dropdown" class="pl-4 mt-1 hidden">
+                    <a href="./add-homework.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-plus w-5 h-5"></i>
                         <span class="ml-3">Add Homework</span>
                     </a>
-                    <a href="#" class="flex items-center px-4 py-2 mb-1 text-white bg-black bg-opacity-30 rounded-md transition-colors duration-200 hover:bg-black hover:bg-opacity-40">
+                    <a href="./manage-homework.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                         <i class="fas fa-tasks w-5 h-5"></i>
                         <span class="ml-3">Manage Homework</span>
                     </a>
                 </div>
             </div>
-            
-            <a href="#" class="flex items-center px-4 py-3 mb-2 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
-                <i class="fas fa-bell w-5 h-5"></i>
-                <span class="ml-3">Notice</span>
-            </a>
-            </a>
+
+            <!-- Notices Dropdown -->
+            <div class="mb-2">
+                <button id="notices-dropdown-btn" class="w-full flex items-center justify-between px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                    <div class="flex items-center">
+                        <i class="fas fa-bell w-5 h-5"></i>
+                        <span class="ml-3">Notices</span>
+                    </div>
+                    <i id="notices-dropdown-icon" class="fas fa-chevron-down transition-transform duration-200"></i>
+                </button>
+                <div id="notices-dropdown" class="pl-4 mt-1 hidden">
+                    <a href="./add-notice.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <i class="fas fa-plus w-5 h-5"></i>
+                        <span class="ml-3">Add Notice</span>
+                    </a>
+                    <a href="./manage-notice.php" class="flex items-center px-4 py-2 mb-1 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+                        <i class="fas fa-list w-5 h-5"></i>
+                        <span class="ml-3">Manage Notices</span>
+                    </a>
+                </div>
+            </div>
         </nav>
-        
+
         <!-- Logout at bottom -->
         <div class="absolute bottom-0 w-full p-4 border-t border-red-800">
-            <a href="#" class="flex items-center px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
+            <a href="./logout.php" class="flex items-center px-4 py-3 text-white/80 rounded-md transition-colors duration-200 hover:bg-red-800">
                 <i class="fas fa-sign-out-alt w-5 h-5"></i>
                 <span class="ml-3">Logout</span>
             </a>
@@ -219,7 +245,7 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
                     <p class="text-gray-400">View and manage all assigned homework in the system.</p>
                 </div>
                 <div class="mt-4 md:mt-0">
-                    <a href="#" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
+                    <a href="add-homework.php" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
                         <i class="fas fa-plus mr-2"></i>
                         <span>Add New Homework</span>
                     </a>
@@ -326,49 +352,8 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
             sidebarIcon.classList.add('fa-bars');
         }
     });
-    
-    // Class dropdown toggle
-    const classDropdownBtn = document.getElementById('class-dropdown-btn');
-    const classDropdown = document.getElementById('class-dropdown');
-    const classDropdownIcon = document.getElementById('class-dropdown-icon');
-    
-    classDropdownBtn.addEventListener('click', () => {
-        classDropdown.classList.toggle('hidden');
-        classDropdownIcon.classList.toggle('rotate-180');
-    });
-    
-    // Students dropdown toggle
-    const studentsDropdownBtn = document.getElementById('students-dropdown-btn');
-    const studentsDropdown = document.getElementById('students-dropdown');
-    const studentsDropdownIcon = document.getElementById('students-dropdown-icon');
-    
-    studentsDropdownBtn.addEventListener('click', () => {
-        studentsDropdown.classList.toggle('hidden');
-        studentsDropdownIcon.classList.toggle('rotate-180');
-    });
-    
-    // Homework dropdown toggle (already open by default)
-    const homeworkDropdownBtn = document.getElementById('homework-dropdown-btn');
-    const homeworkDropdown = document.getElementById('homework-dropdown');
-    const homeworkDropdownIcon = document.getElementById('homework-dropdown-icon');
-    
-    homeworkDropdownBtn.addEventListener('click', () => {
-        homeworkDropdown.classList.toggle('hidden');
-        homeworkDropdownIcon.classList.toggle('rotate-180');
-    });
-    
-    // Close sidebar when clicking outside on mobile
-    document.addEventListener('click', (e) => {
-        const isMobile = window.innerWidth < 768;
-        const isOutsideSidebar = !sidebar.contains(e.target) && !sidebarToggle.contains(e.target);
-        
-        if (isMobile && isOutsideSidebar && !sidebar.classList.contains('-translate-x-full')) {
-            sidebar.classList.add('-translate-x-full');
-            sidebarIcon.classList.remove('fa-times');
-            sidebarIcon.classList.add('fa-bars');
-        }
-    });
 </script>
+
 </body>
 </html>
 
