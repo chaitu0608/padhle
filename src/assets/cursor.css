@@ -1,0 +1,53 @@
+/* Hide default cursor */
+body {
+  cursor: none;
+}
+
+/* Small dot cursor */
+.cursor-dot {
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(
+    circle,
+    rgb(74, 74, 184) 0%,
+    rgb(43, 178, 223) 80%
+  );
+  position: fixed;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none;
+  transition: transform 0.1s ease;
+}
+
+/* Outline cursor */
+.cursor-outline {
+  width: 30px;
+  height: 30px;
+  border: 2px dashed powderblue;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none;
+  animation: outline-pulse 1.5s infinite alternate;
+  transition: transform 0.1s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  cursor: none;
+}
+
+::-webkit-scrollbar-thumb {
+  cursor: none;
+}
+
+::-webkit-scrollbar-track {
+  cursor: none;
+}
+
+/* Hide cursor globally */
+* {
+  cursor: none !important;
+}
