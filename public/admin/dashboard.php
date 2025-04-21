@@ -212,21 +212,21 @@ if (!isset($_SESSION['sturecmsaid'])) {
                 <!-- Report Summary Section -->
                 <div class="mb-8">
                     <h3 class="text-xl font-semibold mb-4 text-highlight-yellow">Report Summary</h3>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         <!-- Summary Box 1: Classes -->
                         <div class="bg-dark-lighter border border-dark-border rounded-lg p-4 transition-all duration-300 hover:border-somaiya-red hover:shadow-md">
                             <div class="flex items-start justify-between">
                                 <div>
-                                <p class="text-3xl font-bold mb-1">
-                                    <?php
-                                    $sql = "SELECT COUNT(*) as total FROM tblclass";
-                                    $query = $dbh->prepare($sql);
-                                    $query->execute();
-                                    $classCount = $query->fetch(PDO::FETCH_OBJ)->total;
-                                    echo htmlentities($classCount);
-                                    ?>
-                                </p>
+                                    <p class="text-3xl font-bold mb-1">
+                                        <?php
+                                        $sql = "SELECT COUNT(*) as total FROM tblclass";
+                                        $query = $dbh->prepare($sql);
+                                        $query->execute();
+                                        $classCount = $query->fetch(PDO::FETCH_OBJ)->total;
+                                        echo htmlentities($classCount);
+                                        ?>
+                                    </p>
                                     <p class="text-gray-400 text-sm">Total Classes</p>
                                 </div>
                                 <div class="w-10 h-10 bg-somaiya-red bg-opacity-20 rounded-full flex items-center justify-center text-somaiya-red">
@@ -240,18 +240,20 @@ if (!isset($_SESSION['sturecmsaid'])) {
                                 </a>
                             </div>
                         </div>
-                        
+
                         <!-- Summary Box 2: Students -->
                         <div class="bg-dark-lighter border border-dark-border rounded-lg p-4 transition-all duration-300 hover:border-somaiya-red hover:shadow-md">
                             <div class="flex items-start justify-between">
                                 <div>
-                                    <p class="text-3xl font-bold mb-1"><?php
-                                    $sql2 = "SELECT ID FROM tblstudent";
-                                    $query2 = $dbh->prepare($sql2);
-                                    $query2->execute();
-                                    $totstudents = $query2->rowCount();
-                                    ?>
-                                    <p class="text-3xl font-bold mb-1"><?php echo htmlentities($totstudents); ?></p></p>
+                                    <p class="text-3xl font-bold mb-1">
+                                        <?php
+                                        $sql2 = "SELECT ID FROM tblstudent";
+                                        $query2 = $dbh->prepare($sql2);
+                                        $query2->execute();
+                                        $totstudents = $query2->rowCount();
+                                        echo htmlentities($totstudents);
+                                        ?>
+                                    </p>
                                     <p class="text-gray-400 text-sm">Total Students</p>
                                 </div>
                                 <div class="w-10 h-10 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center text-blue-500">
@@ -259,24 +261,26 @@ if (!isset($_SESSION['sturecmsaid'])) {
                                 </div>
                             </div>
                             <div class="mt-4 pt-3 border-t border-dark-border">
-                                <a href="#" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200 flex items-center">
+                                <a href="manage-students.php" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200 flex items-center">
                                     <span>View Students</span>
                                     <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                 </a>
                             </div>
                         </div>
-                        
+
                         <!-- Summary Box 3: Homework -->
                         <div class="bg-dark-lighter border border-dark-border rounded-lg p-4 transition-all duration-300 hover:border-somaiya-red hover:shadow-md">
                             <div class="flex items-start justify-between">
                                 <div>
-                                    <p class="text-3xl font-bold mb-1"><?php
-                                    $sql3 = "SELECT ID FROM tblhomework";
-                                    $query3 = $dbh->prepare($sql3);
-                                    $query3->execute();
-                                    $totalhomework = $query3->rowCount();
-                                    ?>
-                                    <p class="text-3xl font-bold mb-1"><?php echo htmlentities($totalhomework); ?></p></p>
+                                    <p class="text-3xl font-bold mb-1">
+                                        <?php
+                                        $sql3 = "SELECT ID FROM tblhomework";
+                                        $query3 = $dbh->prepare($sql3);
+                                        $query3->execute();
+                                        $totalhomework = $query3->rowCount();
+                                        echo htmlentities($totalhomework);
+                                        ?>
+                                    </p>
                                     <p class="text-gray-400 text-sm">Active Homework</p>
                                 </div>
                                 <div class="w-10 h-10 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center text-green-500">
@@ -284,24 +288,26 @@ if (!isset($_SESSION['sturecmsaid'])) {
                                 </div>
                             </div>
                             <div class="mt-4 pt-3 border-t border-dark-border">
-                                <a href="#" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200 flex items-center">
+                                <a href="manage-homework.php" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200 flex items-center">
                                     <span>View Homework</span>
                                     <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                 </a>
                             </div>
                         </div>
-                        
+
                         <!-- Summary Box 4: Notices -->
                         <div class="bg-dark-lighter border border-dark-border rounded-lg p-4 transition-all duration-300 hover:border-somaiya-red hover:shadow-md">
                             <div class="flex items-start justify-between">
                                 <div>
-                                    <p class="text-3xl font-bold mb-1"><?php
-                                    $sql4 = "SELECT ID FROM tblnotice";
-                                    $query4 = $dbh->prepare($sql4);
-                                    $query4->execute();
-                                    $totalnotices = $query4->rowCount();
-                                    ?>
-                                    <p class="text-3xl font-bold mb-1"><?php echo htmlentities($totalnotices); ?></p></p>
+                                    <p class="text-3xl font-bold mb-1">
+                                        <?php
+                                        $sql4 = "SELECT ID FROM tblnotice";
+                                        $query4 = $dbh->prepare($sql4);
+                                        $query4->execute();
+                                        $totalnotices = $query4->rowCount();
+                                        echo htmlentities($totalnotices);
+                                        ?>
+                                    </p>
                                     <p class="text-gray-400 text-sm">Active Notices</p>
                                 </div>
                                 <div class="w-10 h-10 bg-purple-500 bg-opacity-20 rounded-full flex items-center justify-center text-purple-500">
@@ -309,27 +315,8 @@ if (!isset($_SESSION['sturecmsaid'])) {
                                 </div>
                             </div>
                             <div class="mt-4 pt-3 border-t border-dark-border">
-                                <a href="#" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200 flex items-center">
+                                <a href="manage-notice.php" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200 flex items-center">
                                     <span>View Notices</span>
-                                    <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <!-- Summary Box 5: Reports -->
-                        <div class="bg-dark-lighter border border-dark-border rounded-lg p-4 transition-all duration-300 hover:border-somaiya-red hover:shadow-md">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <p class="text-3xl font-bold mb-1">5</p>
-                                    <p class="text-gray-400 text-sm">New Reports</p>
-                                </div>
-                                <div class="w-10 h-10 bg-yellow-500 bg-opacity-20 rounded-full flex items-center justify-center text-yellow-500">
-                                    <i class="fas fa-chart-bar"></i>
-                                </div>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-dark-border">
-                                <a href="#" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200 flex items-center">
-                                    <span>View Reports</span>
                                     <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                 </a>
                             </div>
@@ -343,7 +330,7 @@ if (!isset($_SESSION['sturecmsaid'])) {
                     <div class="bg-dark-lighter border border-dark-border rounded-lg overflow-hidden">
                         <div class="p-4 border-b border-dark-border flex justify-between items-center">
                             <h3 class="font-semibold">Recent Students</h3>
-                            <a href="#" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200">View All</a>
+                            <a href="manage-students.php" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200">View All</a>
                         </div>
                         <div class="divide-y divide-dark-border">
                         <?php
@@ -397,7 +384,7 @@ if (!isset($_SESSION['sturecmsaid'])) {
                     <div class="bg-dark-lighter border border-dark-border rounded-lg overflow-hidden">
                         <div class="p-4 border-b border-dark-border flex justify-between items-center">
                             <h3 class="font-semibold">Recent Homework</h3>
-                            <a href="#" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200">View All</a>
+                            <a href="manage-homework.php" class="text-somaiya-red text-sm hover:text-highlight-yellow transition-colors duration-200">View All</a>
                         </div>
                         <div class="divide-y divide-dark-border">
                         <?php

@@ -21,6 +21,36 @@ if (isset($_GET['delid'])) {
     echo "<script>alert('Class deleted successfully');</script>";
     echo "<script>window.location.href = 'manage-class.php'</script>";
 }
+
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$section = isset($_GET['section']) ? trim($_GET['section']) : 'all';
+
+$sql = "SELECT * FROM tblclass WHERE 1=1";
+
+// Add filtering by section
+if ($section !== 'all') {
+    $sql .= " AND Section = :section";
+}
+
+// Add search functionality
+if (!empty($search)) {
+    $sql .= " AND (ClassName LIKE :search OR Section LIKE :search)";
+}
+
+$sql .= " ORDER BY ID DESC";
+$query = $dbh->prepare($sql);
+
+// Bind parameters
+if ($section !== 'all') {
+    $query->bindParam(':section', $section, PDO::PARAM_STR);
+}
+if (!empty($search)) {
+    $searchParam = '%' . $search . '%';
+    $query->bindParam(':search', $searchParam, PDO::PARAM_STR);
+}
+
+$query->execute();
+$results = $query->fetchAll(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>
@@ -224,22 +254,40 @@ if (isset($_GET['delid'])) {
                 
                 <!-- Filter/Search Section -->
                 <div class="mb-6 flex flex-col sm:flex-row gap-4">
-                    <div class="relative flex-1">
-                        <input type="text" placeholder="Search classes..." class="w-full bg-dark-lighter border border-dark-border rounded-md py-2 px-4 pl-10 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    </div>
-                    <div class="flex gap-4">
-                        <select class="bg-dark-lighter border border-dark-border rounded-md py-2 px-4 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
-                            <option value="all">All Sections</option>
-                            <option value="A">Section A</option>
-                            <option value="B">Section B</option>
-                            <option value="C">Section C</option>
-                        </select>
+                    <form method="get" class="flex flex-1 gap-4">
+                        <div class="relative flex-1">
+                            <input type="text" name="search" placeholder="Search classes..." value="<?php echo isset($_GET['search']) ? htmlentities($_GET['search']) : ''; ?>"
+                                   class="w-full bg-dark-lighter border border-dark-border rounded-md py-2 px-4 pl-10 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        <div>
+                            <select name="section" class="bg-dark-lighter border border-dark-border rounded-md py-2 px-4 text-white focus:outline-none focus:border-somaiya-red transition-colors duration-200">
+                                <option value="all">All Sections</option>
+                                <?php
+                                // Fetch distinct sections from the database
+                                $sql = "SELECT DISTINCT Section FROM tblclass ORDER BY Section ASC";
+                                $query = $dbh->prepare($sql);
+                                $query->execute();
+                                $sections = $query->fetchAll(PDO::FETCH_OBJ);
+
+                                foreach ($sections as $section) {
+                                    $selected = (isset($_GET['section']) && $_GET['section'] === $section->Section) ? 'selected' : '';
+                                    echo '<option value="' . htmlentities($section->Section) . '" ' . $selected . '>' . htmlentities($section->Section) . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <button type="submit" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-filter mr-2"></i>
+                            <span>Filter</span>
+                        </button>
+                    </form>
+                    <a href="add-class.php">
                         <button class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
                             <i class="fas fa-plus mr-2"></i>
                             <span>Add New Class</span>
                         </button>
-                    </div>
+                    </a>
                 </div>
                 
                 <!-- Class Table -->
@@ -259,10 +307,6 @@ if (isset($_GET['delid'])) {
                         <!-- Table Body -->
                         <div class="divide-y divide-dark-border">
                         <?php
-                        $sql = "SELECT * FROM tblclass ORDER BY ID DESC";
-                        $query = $dbh->prepare($sql);
-                        $query->execute();
-                        $results = $query->fetchAll(PDO::FETCH_OBJ);
                         $cnt = 1;
 
                         foreach ($results as $row) {
@@ -295,17 +339,53 @@ if (isset($_GET['delid'])) {
                 <!-- Pagination -->
                 <div class="mt-6 flex justify-between items-center">
                     <div class="text-sm text-gray-400">
-                        Showing <span class="font-medium text-white">1</span> to <span class="font-medium text-white">8</span> of <span class="font-medium text-white">12</span> entries
+                        <?php
+                        // Total entries
+                        $totalEntries = count($results);
+
+                        // Define pagination variables (example: 8 entries per page)
+                        $entriesPerPage = 8;
+                        $currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
+                        $startEntry = ($currentPage - 1) * $entriesPerPage + 1;
+                        $endEntry = min($startEntry + $entriesPerPage - 1, $totalEntries);
+
+                        echo "Showing <span class='font-medium text-white'>{$startEntry}</span> to <span class='font-medium text-white'>{$endEntry}</span> of <span class='font-medium text-white'>{$totalEntries}</span> entries";
+                        ?>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
-                            <i class="fas fa-chevron-left text-xs"></i>
-                        </button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded bg-somaiya-red text-white">1</button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">2</button>
-                        <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
-                            <i class="fas fa-chevron-right text-xs"></i>
-                        </button>
+                        <?php
+                        // Calculate total pages
+                        $totalPages = ceil($totalEntries / $entriesPerPage);
+
+                        // Previous button
+                        if ($currentPage > 1) {
+                            echo '<a href="?page=' . ($currentPage - 1) . '">
+                                    <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
+                                        <i class="fas fa-chevron-left text-xs"></i>
+                                    </button>
+                                  </a>';
+                        }
+
+                        // Page buttons
+                        for ($i = 1; $i <= $totalPages; $i++) {
+                            if ($i == $currentPage) {
+                                echo '<button class="w-8 h-8 flex items-center justify-center rounded bg-somaiya-red text-white">' . $i . '</button>';
+                            } else {
+                                echo '<a href="?page=' . $i . '">
+                                        <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">' . $i . '</button>
+                                      </a>';
+                            }
+                        }
+
+                        // Next button
+                        if ($currentPage < $totalPages) {
+                            echo '<a href="?page=' . ($currentPage + 1) . '">
+                                    <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
+                                        <i class="fas fa-chevron-right text-xs"></i>
+                                    </button>
+                                  </a>';
+                        }
+                        ?>
                     </div>
                 </div>
                 

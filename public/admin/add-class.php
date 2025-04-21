@@ -23,6 +23,8 @@ if (isset($_POST['submit'])) {
 
     if ($query->execute()) {
         echo "<script>alert('✅ Class added successfully!');</script>";
+        header("Location: manage-class.php");
+        exit();
     } else {
         echo "<script>alert('❌ Failed to add class.');</script>";
     }
