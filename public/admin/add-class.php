@@ -29,6 +29,14 @@ if (isset($_POST['submit'])) {
         echo "<script>alert('❌ Failed to add class.');</script>";
     }
 }
+
+$adminID = $_SESSION['sturecmsaid'];
+
+$sql = "SELECT AdminName, Email FROM tbladmin WHERE ID = :adminid";
+$query = $dbh->prepare($sql);
+$query->bindParam(':adminid', $adminID, PDO::PARAM_INT);
+$query->execute();
+$admin = $query->fetch(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>

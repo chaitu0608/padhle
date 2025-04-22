@@ -51,6 +51,15 @@ if (!empty($search)) {
 
 $query->execute();
 $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+
+$adminID = $_SESSION['sturecmsaid'];
+
+$sql = "SELECT AdminName, Email FROM tbladmin WHERE ID = :adminid";
+$query = $dbh->prepare($sql);
+$query->bindParam(':adminid', $adminID, PDO::PARAM_INT);
+$query->execute();
+$admin = $query->fetch(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>
