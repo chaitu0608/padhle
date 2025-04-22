@@ -1,3 +1,36 @@
+<?php
+session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+include('../../includes/dbconnection.php');
+
+if (!isset($_SESSION['sturecmsaid'])) {
+    header('location:login.php');
+    exit();
+}
+
+// Handle form submission
+if (isset($_POST['submit'])) {
+    $noticetitle = $_POST['noticetitle'];
+    $notice = $_POST['notice'];
+    $classid = $_POST['classid'];
+
+    $sql = "INSERT INTO tblnotice (NoticeTitle, NoticeMsg, classId, CreationDate) 
+            VALUES (:title, :msg, :classid, NOW())";
+
+    $query = $dbh->prepare($sql);
+    $query->bindParam(':title', $noticetitle, PDO::PARAM_STR);
+    $query->bindParam(':msg', $notice, PDO::PARAM_STR);
+    $query->bindParam(':classid', $classid, PDO::PARAM_INT);
+
+    if ($query->execute()) {
+        echo "<script>alert('✅ Notice added successfully!'); window.location.href='manage-notice.php';</script>";
+    } else {
+        echo "<script>alert('❌ Failed to add notice.');</script>";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
