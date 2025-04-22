@@ -4,6 +4,7 @@ include '../../includes/dbconnection.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Delete logic
 if (isset($_GET['delid'])) {
     $id = intval($_GET['delid']);
     $sql = "DELETE FROM tblhomework WHERE ID = :id";
@@ -13,16 +14,34 @@ if (isset($_GET['delid'])) {
     echo "<script>alert('Homework deleted successfully'); window.location.href='manage-homework.php';</script>";
 }
 
+// Pagination variables
+$entriesPerPage = 8; // Number of homework entries per page
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1; // Current page
+$offset = ($page - 1) * $entriesPerPage; // Offset for SQL query
+
+// Base SQL query
 $sql = "SELECT h.ID, h.HomeworkTitle, h.homeworkDescription, 
                h.lastDateOfSubmission AS SubmissionDate, 
                h.postingDate AS DateCreated, 
                c.ClassName, c.Section 
         FROM tblhomework h 
         JOIN tblclass c ON h.ClassId = c.ID 
-        ORDER BY h.ID DESC";
+        ORDER BY h.ID DESC 
+        LIMIT :offset, :entriesPerPage";
+
 $query = $dbh->prepare($sql);
+$query->bindParam(':offset', $offset, PDO::PARAM_INT);
+$query->bindParam(':entriesPerPage', $entriesPerPage, PDO::PARAM_INT);
 $query->execute();
 $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+// Count total entries for pagination
+$totalEntriesQuery = $dbh->prepare("SELECT COUNT(*) 
+                                    FROM tblhomework h 
+                                    JOIN tblclass c ON h.ClassId = c.ID");
+$totalEntriesQuery->execute();
+$totalEntries = $totalEntriesQuery->fetchColumn();
+$totalPages = ceil($totalEntries / $entriesPerPage);
 ?>
 
 <!DOCTYPE html>
@@ -310,22 +329,37 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
             </div>
             
             <!-- Pagination -->
-            <div class="mt-6 flex justify-between items-center">
-                <div class="text-sm text-gray-400">
-                    Showing <span class="font-medium text-white">1</span> to <span class="font-medium text-white">8</span> of <span class="font-medium text-white">24</span> entries
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
-                        <i class="fas fa-chevron-left text-xs"></i>
-                    </button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded bg-somaiya-red text-white">1</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">2</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">3</button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
-                        <i class="fas fa-chevron-right text-xs"></i>
-                    </button>
-                </div>
-            </div>
+<div class="mt-6 flex justify-between items-center">
+    <div class="text-sm text-gray-400">
+        Showing 
+        <span class="font-medium text-white"><?php echo $offset + 1; ?></span> to 
+        <span class="font-medium text-white"><?php echo min($offset + $entriesPerPage, $totalEntries); ?></span> of 
+        <span class="font-medium text-white"><?php echo $totalEntries; ?></span> entries
+    </div>
+    <div class="flex items-center space-x-2">
+        <?php if ($page > 1): ?>
+            <a href="?page=<?php echo $page - 1; ?>">
+                <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
+                    <i class="fas fa-chevron-left text-xs"></i>
+                </button>
+            </a>
+        <?php endif; ?>
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <a href="?page=<?php echo $i; ?>">
+                <button class="w-8 h-8 flex items-center justify-center rounded <?php echo $i == $page ? 'bg-somaiya-red text-white' : 'border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red'; ?> transition-colors duration-200">
+                    <?php echo $i; ?>
+                </button>
+            </a>
+        <?php endfor; ?>
+        <?php if ($page < $totalPages): ?>
+            <a href="?page=<?php echo $page + 1; ?>">
+                <button class="w-8 h-8 flex items-center justify-center rounded border border-dark-border text-gray-400 hover:border-somaiya-red hover:text-somaiya-red transition-colors duration-200">
+                    <i class="fas fa-chevron-right text-xs"></i>
+                </button>
+            </a>
+        <?php endif; ?>
+    </div>
+</div>
             
             <!-- Footer -->
             <footer class="mt-12 pb-6 text-center text-gray-500 text-sm">
