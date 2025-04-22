@@ -196,3 +196,5 @@ $results = $query->fetchAll(PDO::FETCH_OBJ);
     </div>
 </body>
 </html>
+
+<!--navbar is left-->
