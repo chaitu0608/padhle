@@ -236,7 +236,7 @@ $admin = $query->fetch(PDO::FETCH_OBJ);
                     <p class="text-gray-400">View and manage all notices in the system.</p>
                 </div>
                 <div class="mt-4 md:mt-0">
-                    <a href="#" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
+                    <a href="add-notice.php" class="bg-somaiya-red text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 flex items-center">
                         <i class="fas fa-plus mr-2"></i>
                         <span>Add New Notice</span>
                     </a>
