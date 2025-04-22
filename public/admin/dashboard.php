@@ -8,6 +8,14 @@ if (!isset($_SESSION['sturecmsaid'])) {
     header('location:login.php');
     exit();
 }
+
+$adminID = $_SESSION['sturecmsaid'];
+
+$sql = "SELECT AdminName, Email FROM tbladmin WHERE ID = :adminid";
+$query = $dbh->prepare($sql);
+$query->bindParam(':adminid', $adminID, PDO::PARAM_INT);
+$query->execute();
+$admin = $query->fetch(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>
@@ -194,7 +202,12 @@ if (!isset($_SESSION['sturecmsaid'])) {
             <div class="bg-dark-lighter border-b border-dark-border p-4 flex justify-between items-center sticky top-0 z-20">
                 <h1 class="text-xl font-semibold text-highlight-yellow">Admin Dashboard</h1>
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-400">Admin | admin@gmail.com</span>
+                    <span class="text-sm text-gray-400">
+                    <span>
+                        <?php echo htmlentities($admin->AdminName); ?> | 
+                        <?php echo htmlentities($admin->Email); ?>
+                    </span>
+                    </span>
                     <div class="w-8 h-8 bg-somaiya-red rounded-full flex items-center justify-center text-white font-medium">
                         A
                     </div>
@@ -205,7 +218,7 @@ if (!isset($_SESSION['sturecmsaid'])) {
             <div class="p-6 animate-fade-in">
                 <!-- Welcome Section -->
                 <div class="mb-8">
-                    <h2 class="text-2xl font-bold mb-2">Welcome Admin!</h2>
+                    <h2 class="text-2xl font-bold mb-2">Welcome <?php echo htmlentities($admin->AdminName); ?> </h2>
                     <p class="text-gray-400">Here's an overview of your student portal statistics.</p>
                 </div>
                 
